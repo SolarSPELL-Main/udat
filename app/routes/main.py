@@ -1,5 +1,4 @@
 from flask import Blueprint, render_template
-from app.models import Content, ContentSet
 
 main= Blueprint('main', __name__, url_prefix='/')
 

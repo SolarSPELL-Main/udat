@@ -17,9 +17,11 @@ db = SQLAlchemy(app)
 
 # Import a module / component using its blueprint handler variable (mod_auth)
 from app.routes.main import main
+from app.routes.content_set import content_set
 
 # Register blueprint(s)
 app.register_blueprint(main)
+app.register_blueprint(content_set)
 # app.register_blueprint(xyz_module)
 # ..
 
