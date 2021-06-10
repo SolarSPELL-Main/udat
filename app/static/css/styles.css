@@ -1,0 +1,278 @@
+/* You can add global styles to this file, and also import other style files */
+@import url("//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css");
+@import '../theme/bootstrap/css/bootstrap.min.css';
+
+@font-face{
+  font-family:Roboto;
+  src:url("assets/static/Roboto-Regular.ttf")
+}
+* {
+  font-family: 'Roboto', 'Helvetica' , 'sans-serif';
+}
+/* ASU Brand colors backgrounds */
+.bg-primary-dark{
+  background-color: #0676D8;
+}
+.bg-primary-light{
+  background-color:#00A3E0;
+}
+.bg-primary-light-10{
+  background-color: rgba(0, 163, 224, 0.1);
+}
+.bg-sunglow{
+  background-color:#FFC627;
+}
+.bg-sunglow-10{
+  background-color:rgba(255, 198, 39, 0.1);
+}
+.bg-sunglow-50{
+  background-color:rgba(255, 198, 39, 0.5);
+}
+.bg-gold{
+  background-color: #FF7F32;
+}
+.bg-maroon{
+  background-color:#8C1D40;
+}
+.bg-green{
+  background-color: #78BE20;
+}
+.bg-grey{
+  background-color: #5C6670;
+}
+.bg-white{
+  background-color: #FFFFFF;
+}
+.bg-black{
+  background-color: #000000;
+}
+.bg-active-primary-dark:active{
+  background-color: #0676D8;
+}
+.bg-active-primary-light:active{
+  background-color:#00A3E0;
+}
+.bg-active-sunglow:active{
+  background-color:#FFC627;
+}
+.bg-active-sunglow-50:active{
+  background-color:rgba(255, 198, 39, 0.5);
+}
+.bg-active-gold:active{
+  background-color: #FF7F32;
+}
+.bg-active-maroon:active{
+  background-color:#8C1D40;
+}
+.bg-active-green:active{
+  background-color: #78BE20;
+}
+.bg-active-grey:active{
+  background-color: #5C6670;
+}
+.bg-active-white:active{
+  background-color: #FFFFFF;
+}
+.bg-active-black:active{
+  background-color: #000000;
+}
+.bg-focus-primary-dark:focus{
+  background-color: #0676D8;
+}
+.bg-focus-primary-light:focus{
+  background-color:#00A3E0;
+}
+.bg-focus-sunglow:focus{
+  background-color:#FFC627;
+}
+.bg-focus-sunglow-50:focus{
+  background-color:rgba(255, 198, 39, 0.5);
+}
+.bg-focus-gold:focus{
+  background-color: #FF7F32;
+}
+.bg-focus-maroon:focus{
+  background-color:#8C1D40;
+}
+.bg-focus-green:focus{
+  background-color: #78BE20;
+}
+.bg-focus-grey:focus{
+  background-color: #5C6670;
+}
+.bg-focus-white:focus{
+  background-color: #FFFFFF;
+}
+.bg-focus-black:focus{
+  background-color: #000000;
+}
+.bg-hover-primary-dark:hover{
+  background-color: #0676D8;
+}
+.bg-hover-primary-light:hover{
+  background-color:#00A3E0;
+}
+.bg-hover-sunglow:hover{
+  background-color:#FFC627;
+}
+.bg-hover-sunglow-50:hover{
+  background-color:rgba(255, 198, 39, 0.5);
+}
+.bg-hover-gold:hover{
+  background-color: #FF7F32;
+}
+.bg-hover-maroon:hover{
+  background-color:#8C1D40;
+}
+.bg-hover-green:hover{
+  background-color: #78BE20;
+}
+.bg-hover-grey:hover{
+  background-color: #5C6670;
+}
+.bg-hover-white:hover{
+  background-color: #FFFFFF;
+}
+.bg-hover-black:hover{
+  background-color: #000000;
+}
+
+/* ASU Brand colors borders */
+.border-primary-dark{
+  border-color: #0676D8;
+}
+.border-primary-light{
+  border-color:#00A3E0;
+}
+.border-sunglow{
+  border-color:#FFC627;
+}
+.bg-gold{
+  border-color: #FF7F32;
+}
+.border-maroon{
+  border-color:#8C1D40;
+}
+.border-green{
+  border-color: #78BE20;
+}
+.border-grey{
+  border-color: #5C6670;
+}
+.border-white{
+  border-color: #FFFFFF;
+}
+.border-black{
+  border-color: #000000;
+}
+
+/* ASU Brand colors text colors */
+.text-primary-dark{
+  color: #0676D8;
+}
+.text-primary-light{
+  color:#00A3E0;
+}
+.text-sunglow{
+  color:#FFC627;
+}
+.text-gold{
+  color: #FF7F32;
+}
+.text-maroon{
+  color:#8C1D40;
+}
+.text-green{
+  color: #78BE20;
+}
+.text-grey{
+  color: #5C6670;
+}
+.text-white{
+  color: #FFFFFF;
+}
+.text-black{
+  color: #000000;
+}
+.text-active-primary-dark:active{
+  color: #0676D8;
+}
+.text-active-primary-light:active{
+  color:#00A3E0;
+}
+.text-active-sunglow:active{
+  color:#FFC627;
+}
+.text-active-gold:active{
+  color: #FF7F32;
+}
+.text-active-maroon:active{
+  color:#8C1D40;
+}
+.text-active-green:active{
+  color: #78BE20;
+}
+.text-active-grey:active{
+  color: #5C6670;
+}
+.text-active-white:active{
+  color: #FFFFFF;
+}
+.text-active-black:active{
+  color: #000000;
+}
+.text-focus-primary-dark:focus{
+  color: #0676D8;
+}
+.text-focus-primary-light:focus{
+  color:#00A3E0;
+}
+.text-focus-sunglow:focus{
+  color:#FFC627;
+}
+.text-focus-gold:focus{
+  color: #FF7F32;
+}
+.text-focus-maroon:focus{
+  color:#8C1D40;
+}
+.text-focus-green:focus{
+  color: #78BE20;
+}
+.text-focus-grey:focus{
+  color: #5C6670;
+}
+.text-focus-white:focus{
+  color: #FFFFFF;
+}
+.text-focus-black:focus{
+  color: #000000;
+}
+.text-hover-primary-dark:hover{
+  color: #0676D8;
+}
+.text-hover-primary-light:hover{
+  color:#00A3E0;
+}
+.text-hover-sunglow:hover{
+  color:#FFC627;
+}
+.text-hover-gold:hover{
+  color: #FF7F32;
+}
+.text-hover-maroon:hover{
+  color:#8C1D40;
+}
+.text-hover-green:hover{
+  color: #78BE20;
+}
+.text-hover-grey:hover{
+  color: #5C6670;
+}
+.text-hover-white:hover{
+  color: #FFFFFF;
+}
+.text-hover-black:hover{
+  color: #000000;
+}
+
