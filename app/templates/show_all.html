@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- Button at the top of the page to add content-->
+<div class="text-center">
+<form action="{{ url_for('content_set.add') }}">
+<button class="text-white btn-lg mt-4 mb-3 bg-primary-light" onclick="" >Add a Content</button> 
+</form>
+</div>
+
+<!-- Create Table which shows all content sets -->
+<div class="container -sm">
+  
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Location</th>
+            <th scope="col">Exported On</th>
+            <th scope="col">Imported On</th>
+            <th scope="col">Imported By</th>
+            <th scope="col">Library version</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        
+        
+        {% for con in ContentSet %}
+            <tr>
+                <th scope="row">{{con.id}}</th>
+                <td>{{con.location}}</td>
+                <td>{{con.exproted_on}}</td>
+                <td>{{con.imported_on}}</td>
+                <td>{{con.imported_by}}</td>
+                <td>{{con.lib_version}}</td>
+                <!--Edit button-->
+                <td><form action="{{ url_for('content_set.edit', id = con.id) }}" method="POST"><button class="btn-sm btn-block bg-primary-light text-white"> Edit</button></form></td>
+                <!--delete button-->
+                <td><form action="{{ url_for('content_set.delete', id1 = con.id) }}" method="GET"><button class=" btn-danger" onclick="{if(confirm('Are you sure you want to delete this record?')){this.document.formname.submit();return true;}return false;}">Delete</button></form></td>
+                
+            </tr>
+
+        {% endfor %}
+        
+    </tbody>
+
+</table>
+</div>
+{% endblock content %}
