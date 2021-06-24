@@ -1,5 +1,8 @@
+from app.routes.user_login import login
+from datetime import datetime
+from datetime import date
 from app import db
-
+from flask_login import UserMixin
 # the class references the content set imprted into the database
 class ContentSet(db.Model):
     __tablename__ = 'content_set'
@@ -41,3 +44,19 @@ class Content(db.Model):
         self.browser = browser
         self.device_type = device_type
         self.device_os = device_os
+
+# the class refrence users table in database
+class User(UserMixin,db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    fullname = db.Column(db.String(100))
+    username = db.Column(db.String(100))
+    password = db.Column(db.String(50))
+
+    def __init__(self,fullname,username,password):
+        self.fullname = fullname
+        self.username = username
+        self.password = password
+
+
+
+
