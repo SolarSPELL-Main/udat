@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+
+<h2>Manage <b>Files </b>  <button type="button" class="btn btn-success" data-toggle="modal" data-target="#mymodal"> Add Data</button>
+    <div id="mymodal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+           <div class="modal-content">
+              <div class="modal-header">
+      
+                 <h4 class="modal-title">Add New File</h4>
+              </div>
+              <div class="modal-body">
+      
+                 <form  action="{{ request.path }}" method="POST" enctype="multipart/form-data">
+      
+      
+                    <div class="form-group">
+      
+                       <label>Location:</label>
+                       <input type="text" class="form-control" name="Location" required="1">
+      
+      
+                    </div>
+      
+      
+                     <div class="form-group">
+      
+      
+                       <label>Exported_on:</label>
+                       <input type="date" class="form-control" name="Exported_on" required="1">
+      
+      
+                    </div>
+      
+      
+                     <div class="form-group">
+      
+      
+                       <label>Imported_on:</label>
+                       <input type="date" class="form-control" name="Imported_on" required="1">
+      
+      
+                    </div>
+                    <div class="form-group">
+      
+      
+                      <label>Imported_by:</label>
+                      <input type="text" class="form-control" name="Imported_by" required="1">
+     
+     
+                   </div>
+                   <div class="form-group">
+      
+      
+                       <label>Lib_version:</label>
+                       <input type="text" class="form-control" name="Lib_version" required="1">
+                   </div>
+   
+   
+                    
+                    <div class="file btn btn-sm btn-primary">
+                        Upload
+                        <input type="file" name="csvfiles" id="file_upload" accept=".csv"/>
+                    </div>
+                    
+
+                    <!-- </div> -->
+                      <!-- <div class="form-group"> -->
+                       <!-- <button class="btn-sm btn-primary pull-right" type="submit">Submit</button> -->
+                    <!-- </div> -->
+                  <form action="">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                  </form>
+      
+                 </form>
+      
+      
+              </div>
+      
+      
+              <div class="modal-footer">
+ 
+ 
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+     
+     
+             </div>
+      
+      
+           </div>
+      
+      
+        </div>
+      
+      
+     </div>
+       
