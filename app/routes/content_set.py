@@ -4,13 +4,13 @@ from sqlalchemy.orm import session
 from app.models import Content, ContentSet
 from app import db
 import pandas as pd
-
-
 from werkzeug.utils import secure_filename
-
 import csv
 import pandas as pd
 from io import TextIOWrapper
+from flask.helpers import url_for
+from flask.wrappers import Request
+from werkzeug.utils import redirect
 
 
 
@@ -20,7 +20,7 @@ content_set= Blueprint('content_set', __name__, url_prefix='/content_set')
 
 # For add_content_set
 
-@content_set.route('/add_content_set', methods=['GET','POST'])
+@content_set.route('/add', methods=['GET','POST'])
 def upload():
     if request.method == 'POST':
 
@@ -28,14 +28,14 @@ def upload():
         # filename = secure_filename(csv_file.filename)
         csv_files = TextIOWrapper(csv_file, encoding='utf-8-sig')
         content_sets = csv_files.read() # read csv file
-        Exported_date = str(request.form['Exported_on'])
+        Exported_date = str(request.form['Exported on'])
         year, month, day = map(int, Exported_date.split('-'))
         filter_Exported_date = datetime.date(year, month, day)
 
-        Imported_date = str(request.form['Imported_on'])
+        Imported_date = str(request.form['Imported on'])
         year1, month1, day1 = map(int, Imported_date.split('-'))
         filter_Imported_date = datetime.date(year1, month1, day1)
-        content_set = ContentSet(location=request.form['Location'],exported_on=filter_Exported_date, imported_on=filter_Imported_date, imported_by=request.form['Imported_by'], lib_version=request.form['Lib_version'])
+        content_set = ContentSet(location=request.form['Location'],exported_on=filter_Exported_date, imported_on=filter_Imported_date, imported_by=request.form['Imported by'], lib_version=request.form['Library version'])
 
 
         db.session.add(content_set)
@@ -66,6 +66,10 @@ def prepare_content_object(new_id, content_csv_obj):
 
 # For edit_content_set
 
+# @content_set.route('/edit/<int:id>', methods=['GET','POST'])
+# def edit(id):
+    #  return render_template('edit.html', title='Edit content set')
+
 @content_set.route('/edit_content_set/', methods=['GET','POST'])
 def edit_content():
     
@@ -73,19 +77,15 @@ def edit_content():
 
     # # fetch Id from request parameter, if not given, defaults to 1 for testing purposes now
 
-    print('ans for update ', request.args.get('id'))
+    # print('ans for update ', request.args.get('id'))
     content_set_id = request.args.get('id') if request.args.get('id') is not None else 1
 
     # # fetch corresponding dataset from DB
     
-    if request.method == 'GET':
-        
-        # print(content_set_id)
+    if request.method == 'POST':
         content_set_rec = db.session.get(ContentSet, {"id": content_set_id})
-        # print('m',content_set_rec)
 
         # render in UI for Edit modal
-        # print('loc:',content_set_rec.location)
         return render_template('edit_content_set.html',
                                
                                location=content_set_rec.location,
@@ -107,16 +107,14 @@ def edit_content():
         import_date = datetime.date(year1, month1, day1)
 
         content_set = ContentSet(location=request.form['Location'], exported_on=export_date, imported_on=import_date,
-                                 imported_by=request.form['Imported_by'], lib_version=request.form['Lib_version'])
+                                 imported_by=request.form['Imported_by'], lib_version=request.form['Library_version'])
 
         print('update now' ,content_set_id)
         # Updating the content_set
         value = ContentSet.query.filter_by(id=content_set_id).first()
         
-      
-        
         value.location = content_set.location
-        value.export_data = content_set.exproted_on
+        value.export_date = content_set.exproted_on
         value.lib_version = content_set.lib_version
         value.imported_by = content_set.imported_by
         value.imported_on = content_set.imported_on
@@ -124,18 +122,6 @@ def edit_content():
         db.session.commit()                         
 
         return render_template('edit_content_set.html')
-from flask import Blueprint, render_template, flash
-from flask.helpers import url_for
-from flask.wrappers import Request
-from werkzeug.utils import redirect
-from app.models import Content, ContentSet
-from app import db
-
-content_set= Blueprint('content_set', __name__, url_prefix='/content_set')
-
-# This is where the routes and their defenitions will go
-
- 
 
 
 @content_set.route('/delete/<int:id1>', methods=['GET','POST'])
@@ -153,11 +139,7 @@ def show_all():
 
 
   
-@content_set.route('/edit/<int:id>', methods=['GET','POST'])
-def edit(id):
-     return render_template('edit.html', title='Edit content set')
+
      
 
-@content_set.route('/add', methods=['GET','POST'])
-def add():
-    return render_template('add.html', title='Add content Set')
+

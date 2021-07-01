@@ -3,8 +3,11 @@
 {% block content %}
 <!-- Button at the top of the page to add content-->
 <div class="text-center">
-<form action="{{ url_for('content_set.add') }}">
-<button class="text-white btn-lg mt-4 mb-3 bg-primary-light" onclick="" >Add a Content</button> 
+<form action="{{ url_for('content_set.upload') }}">
+<button class = "text-white btn-lg mt-4 mb-3 bg-primary-light" onclick="">Add a Content</button>
+
+<!-- <button class="text-white btn-lg mt-4 mb-3 bg-primary-light" onclick="" >Add a Content</button> -->
+<!-- <button type="button" class="text-white btn-lg mt-4 mb-3 bg-primary-light btn btn-success"onclick="" data-toggle="modal" data-target="#mymodal"> Add a Content</button>  -->
 </form>
 </div>
 
@@ -36,7 +39,7 @@
                 <td>{{con.imported_by}}</td>
                 <td>{{con.lib_version}}</td>
                 <!--Edit button-->
-                <td><form action="{{ url_for('content_set.edit', id = con.id) }}" method="POST"><button class="btn-sm btn-block bg-primary-light text-white"> Edit</button></form></td>
+                <td><form action="{{ url_for('content_set.edit_content', id = con.id) }}" method="POST"><button class="btn-sm btn-block bg-primary-light text-white"> Edit</button></form></td>
                 <!--delete button-->
                 <td><form action="{{ url_for('content_set.delete', id1 = con.id) }}" method="GET"><button class=" btn-danger" onclick="{if(confirm('Are you sure you want to delete this record?')){this.document.formname.submit();return true;}return false;}">Delete</button></form></td>
                 
