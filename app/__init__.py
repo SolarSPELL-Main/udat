@@ -21,6 +21,7 @@ db = SQLAlchemy(app)
 from app.routes.main import main
 from app.routes.content_set import content_set
 from app.routes.user_login import user_login
+from app.routes.content import content
 
 db.init_app(app)
 
@@ -28,7 +29,7 @@ login_manager = LoginManager()
 login_manager.login_view = 'user_login.login_user_page'
 login_manager.init_app(app)
 
-from .models import User
+from .models import Content, User
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -38,6 +39,7 @@ def load_user(user_id):
 app.register_blueprint(main)
 app.register_blueprint(content_set)
 app.register_blueprint(user_login)
+app.register_blueprint(content)
 # app.register_blueprint(xyz_module)
 # ..
 

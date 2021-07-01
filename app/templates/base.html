@@ -11,7 +11,10 @@
     {%else%}
     <title>UDAT</title>
     {%endif%}
-
+    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bokeh/1.2.0/bokeh.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bokeh/1.2.0/bokeh-widgets.css" rel="stylesheet" type="text/css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bokeh/1.2.0/bokeh-tables.css" rel="stylesheet" type="text/css">
 
   </head>
   <body>
@@ -23,7 +26,9 @@
             <img src="{{url_for('static', filename='images/logo.png')}}" width="50" height="50" alt="solarSPELL">
             &nbsp; SolarSPELL
         </a>
-       
+        {% if title != 'login' %}
+        <form action="{{ url_for('user_login.logout') }}" method="POST"><button class="btn-sm btn-block bg-primary-light text-white"> logout</button></form></td>
+        {%endif%}
       </div> 
     
     </nav>
@@ -49,4 +54,7 @@
     </footer>
 
   </body>
+  <script src="https://cdn.bokeh.org/bokeh/release/bokeh-2.3.1.min.js"></script>
+  <script src="https://cdn.bokeh.org/bokeh/release/bokeh-widgets-2.3.1.min.js"></script>
+  <script src="https://cdn.bokeh.org/bokeh/release/bokeh-tables-2.3.1.min.js"></script>
 </html>

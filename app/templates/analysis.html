@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row">
+    <div class="col wf mt-5 ml-5">
+        <form action="{{ url_for('content.plot') }}" method="POST">
+            <label for="col" class="text-primary-dark">Please select the data you wish to plot</label>
+            <br>
+            <select name="col" id="col" class="form-select-lg mb-3">
+                <option value="none">--please select--</option>
+               <option value="Language">Language</option>
+               <option value="Content_Type">Content Type</option>
+               <option value="Subject">Subject</option>
+               <option value="Parent_Folder">Parent Folder</option>
+               <option value="Browser">Browser</option>
+               <option value="Device_Type">Device Type</option>
+               <option value="Device_os">Device Operating System</option>
+
+            </select>
+            <br>
+            <button class="btn-sm bg-primary-light text-white">Show plot</button>
+
+        </form>
+    </div>
+    <div class="col wf mt-5">
+        {{ div|safe }}
+        {{ script|safe }}
+
+    </div>
+</div>
+{% endblock %}

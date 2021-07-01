@@ -2,24 +2,43 @@
 {% block content %}
 
 
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-        <div class="notification is-danger">
-            {{ messages[0] }}
+    <div class="row">
+        <div class="col wf">
+            <img src="{{url_for('static',filename='images/home-banner.jpg')}}" alt="" class="opacity-2"  width="420" height="430" >
         </div>
-    {% endif %}
-    {% endwith %}
-    
-    <form method="POST" action="{{ url_for('user_login.login') }}" class="col-lg-4 offset-lg-5 mt-5">
+        <div class="col wf float-left">
+           
+
+                        <form method="POST" action="{{ url_for('user_login.login') }}" class="mt-5 mr-5">
+                                <label for="uname"> Username</label>&nbsp;
+                                <input type="text" placeholder="Enter Username" name="uname1" class="form-control" required>
+                                <label for="psw">Password</label> &nbsp;
+                                <input type="Password" placeholder="Enter Password" name="psw1" class="form-control"  required>
+                                <br>
+                                <button type="submit" class="btn btn-primary btn-block">Login</button> 
+                        </form>
+                        <br>
+                   
+               
+                    {% with messages = get_flashed_messages() %}
+                     {% if messages %}
+                        <div class="notification is-danger text-maroon">
+                            {{ messages[0] }}
+                        </div>
+                      {% endif %}
+                    {% endwith %}   
+
+              
+
+        </div>
+
+          
         
-        <label for="uname"> Username</label>&nbsp;
-        <input type="text" placeholder="Enter Username" name="uname1" required>
-        <br>
-        <label for="psw">Password</label> &nbsp;
-        <input type="Password" placeholder="Enter Password" name="psw1" required>
-        <br>
-        <button type="submit">Login</button> 
-    </form>
+    </div>
+
+ 
+
+
   
    
 

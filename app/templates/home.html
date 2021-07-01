@@ -5,14 +5,15 @@
 <img src="{{url_for('static',filename='images/home-banner.jpg')}}" alt="" class="opacity-2"  width="420" height="430" >
 
 <!--buttons for show content & content analysis-->
+
 <div class="btn col-md-4 col-md-offset-4 ml-4">
-    <form action="{{ url_for('content_set.show_all') }}">
-    <button class="bg-sunglow btn-lg btn-block mt-4" >Show Contents</button> <br><br>
-    </form>
-    <button class="bg-sunglow  btn-lg btn-block "  >Content Analysis</button><br><br>
- 
-  </div>
-  
+  <h3>Welcome {{ current_user.fullname}}</h3>
+  <form action="{{ url_for('content_set.show_all') }}">
+  <button class="bg-sunglow btn-lg btn-block mt-4" >Show Contents</button> <br><br>
+  </form>
+  <button class="bg-sunglow  btn-lg btn-block "  >Content Analysis</button><br><br>
+
+</div>
    
     
 {% endblock %}
