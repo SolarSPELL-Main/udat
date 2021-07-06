@@ -5,3 +5,4 @@ config.py
 udat.db
 .vscode/
 UsageData.db
+udat.db-journal

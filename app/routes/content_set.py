@@ -129,7 +129,7 @@ def edit_content():
 
             return render_template('edit_content_set.html')
     else:
-        return render_template("user_login.html", title='SolarSpell')
+        return render_template("user_login.html", title='login')
 
 @content_set.route('/delete/<int:id1>', methods=['GET','POST'])
 def delete(id1):
@@ -139,12 +139,12 @@ def delete(id1):
         
         return redirect(url_for('content_set.show_all'))
     else:
-        return render_template("user_login.html", title='SolarSpell')
+        return render_template("user_login.html", title='login')
 
 @content_set.route('/show_all')
 def show_all():
     if current_user.is_authenticated:
         return render_template('show_all.html',ContentSet = ContentSet.query.all(), title='Show Content')
     else:
-        return render_template("user_login.html", title='SolarSpell')
+        return render_template("user_login.html", title='login')
 

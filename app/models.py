@@ -1,8 +1,11 @@
 from bokeh.models.annotations import Title
+from sqlalchemy.sql.type_api import BOOLEANTYPE
 from app.routes.user_login import login
 from datetime import datetime
 from datetime import date
 from app import db
+import sqlite3 as sql
+from migrate.versioning.schema import Table, Column
 from flask_login import UserMixin
 # the class references the content set imprted into the database
 class ContentSet(db.Model):
@@ -52,51 +55,10 @@ class User(UserMixin,db.Model):
     fullname = db.Column(db.String(100))
     username = db.Column(db.String(100))
     password = db.Column(db.String(50))
+    is_admin = db.Column(db.Boolean)
 
-    def __init__(self,fullname,username,password):
+    def __init__(self,fullname,username,password,is_admin):
         self.fullname = fullname
         self.username = username
         self.password = password
-
-
-object1 = Content(title="learn", language="eng", content_type="pdf", subject="education", parent_folder="downloads", browser="chrome", device_type="desktop", device_os="windows")
-object2 = Content(title="learn", language="eng", content_type="pdf", subject="education", parent_folder="desktop", browser="safari", device_type="phone", device_os="ios")
-object3 = Content(title="learn", language="eng", content_type="pdf", subject="education", parent_folder="downloads", browser="safari", device_type="phone", device_os="ios")
-object4 = Content(title="learn", language="spanish", content_type="pdf", subject="education", parent_folder="downloads", browser="safari", device_type="phone", device_os="android")
-object5 = Content(title="learn", language="eng", content_type="pdf", subject="education", parent_folder="desktop", browser="chrome", device_type="phone", device_os="android")
-object6 = Content(title="learn", language="spanish", content_type="mp4", subject="education", parent_folder="downloads", browser="mozilla", device_type="phone", device_os="android")
-object7 = Content(title="body parts", language="eng", content_type="mp4", subject="science", parent_folder="downloads", browser="moilla", device_type="phone", device_os="android")
-object8 = Content(title="body parts", language="eng", content_type="mp4", subject="science", parent_folder="downloads", browser="chrome", device_type="phone", device_os="ios")
-object9 = Content(title="stories", language="spanish", content_type="pdf", subject="education", parent_folder="desktop", browser="mozilla", device_type="phone", device_os="ios")
-object10 = Content(title="stories", language="spanish", content_type="pdf", subject="education", parent_folder="downloads", browser="chrome", device_type="desktop", device_os="windows")
-object11 = Content(title="stories", language="eng", content_type="mp4", subject="education", parent_folder="downloads", browser="mozilla", device_type="desktop", device_os="windows")
-object12 = Content(title="stories", language="spanish", content_type="pdf", subject="education", parent_folder="folder C", browser="chrome", device_type="desktop", device_os="windows")
-object13 = Content(title="body parts", language="eng", content_type="mp4", subject="science", parent_folder="downloads", browser="chrome", device_type="desktop", device_os="windows")
-object14 = Content(title="learn", language="eng", content_type="pdf", subject="education", parent_folder="downloads", browser="chrome", device_type="desktop", device_os="mac")
-object15 = Content(title="learn", language="eng", content_type="pdf", subject="education", parent_folder="folder C", browser="mozilla", device_type="desktop", device_os="mac")
-object16 = Content(title="body parts", language="eng", content_type="mp4", subject="science", parent_folder="folder C", browser="chrome", device_type="desktop", device_os="windows")
-object17 = Content(title="algebra", language="eng", content_type="pdf", subject="education", parent_folder="downloads", browser="mozilla", device_type="phone", device_os="ios")
-object18 = Content(title="algebra", language="eng", content_type="mp4", subject="education", parent_folder="folder C", browser="mozilla", device_type="phone", device_os="android")
-object19 = Content(title="algebra", language="spanish", content_type="pdf", subject="education", parent_folder="folder C", browser="chrome", device_type="phone", device_os="ios")
-object20 = Content(title="body parts", language="eng", content_type="mp4", subject="science", parent_folder="downloads", browser="chrome", device_type="phone", device_os="android")
-db.session.add(object1)
-db.session.add(object2)
-db.session.add(object3)
-db.session.add(object4)
-db.session.add(object5)
-db.session.add(object6)
-db.session.add(object7)
-db.session.add(object8)
-db.session.add(object9)
-db.session.add(object10)
-db.session.add(object11)
-db.session.add(object12)
-db.session.add(object13)
-db.session.add(object14)
-db.session.add(object15)
-db.session.add(object16)
-db.session.add(object17)
-db.session.add(object18)
-db.session.add(object19)
-db.session.add(object20)
-db.session.commit()
+        self.is_admin = is_admin

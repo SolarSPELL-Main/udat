@@ -8,7 +8,7 @@ import sqlite3 as sql
 import pandas as pd
 from collections import Counter
 
-content= Blueprint('content', __name__, url_prefix='/')
+content= Blueprint('content', __name__, url_prefix='/content')
 @content.route('/analysis', methods=['POST','GET'])
 def plot():
    if current_user.is_authenticated:

@@ -37,5 +37,9 @@ def logout():
     logout_user()
     return redirect(url_for('user_login.login_user_page',title='login'))
 
+@user_login.route('/manage_users/',methods=['GET','POST'])
+def manage_users():
+    return render_template('manage_users.html',User = app.models.User.query.all(),title='User Managment')
+
     
     
