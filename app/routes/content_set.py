@@ -8,7 +8,6 @@ from app import db
 import pandas as pd
 from werkzeug.utils import secure_filename
 import csv
-import pandas as pd
 from io import TextIOWrapper
 from flask.helpers import url_for
 from flask.wrappers import Request
