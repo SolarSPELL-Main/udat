@@ -7,26 +7,38 @@
   </div>
 <div class="col wf mt-5 ml-5 mb-4">
 
-<form action="{{ url_for('content_set.save_edited_content', id = id) }}" method="POST" enctype="multipart/form-data">
-   <br>
-   <button type="save" class="btn btn-primary" >Save</button>
-   <label>Location:</label>
-   <input type="text" class="form-control" name="Location" value="{{ location }}">
-   <br>
-   <label>Exported on:</label>
-   <input type="date" class="form-control" name="Exported_on" value="{{ exported_on }}">
-   <br>
-   <label>Imported on:</label>
-   <input type="date" class="form-control" name="Imported_on" value="{{ imported_on }}">
-   <br>
-   <label>Imported by:</label>
-   <input type="text" class="form-control" name="Imported_by" value="{{ imported_by }}">
-   <br>
-   <label>Library version:</label>
-   <input type="text" class="form-control" name="Library_version" value="{{ lib_version }}">
-   <br>
-   
-</form>
+<form action="{{url_for('content_set.save_edited_content', id = id)}}" method="POST" enctype="multipart/form-data">
+
+      <div class="form-group">
+            <label>Location:</label>
+            <input type="text" class="form-control" name="Location" value="{{ location }}">
+       </div>
+      <div class="form-group">
+            <label>Exported on:</label>
+  
+             <input type="date" class="form-control" name="Exported_on" value="{{ exported_on }}">
+       </div>
+  
+     <div class="form-group">
+            <label>Imported on:</label>
+  
+               <input type="date" class="form-control" name="Imported_on" value="{{ imported_on }}">
+       </div>
+     <!-- <div class="form-group">
+             <label>Imported by:</label>
+ 
+            <input type="text" class="form-control" name="Imported_by" value="{{ imported_by }}">
+       </div> -->
+      <div class="form-group">
+            <label>Library version:</label>
+
+             <input type="text" class="form-control" name="Library_version" value="{{ lib_version }}">
+       </div>
+      <div class="form-group">
+          <button class="btn btn-primary" type="Save">Save</button>
+       </div>
+  
+  </form>
   
   
  </div>

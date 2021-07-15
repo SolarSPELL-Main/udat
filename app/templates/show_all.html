@@ -36,9 +36,9 @@
                 <td>{{con.location}}</td>
                 <td>{{con.exproted_on}}</td>
                 <td>{{con.imported_on}}</td>
-                <td>{{con.imported_by}}</td>
+                <td>{{con.user.fullname}}</td>
                 <td>{{con.lib_version}}</td>
-                <!--Edit button-->
+                <!-- Edit button -->
                 <td><form action="{{ url_for('content_set.edit_content', id = con.id) }}" method="POST"><button class="btn-sm btn-block bg-primary-light text-white"> Edit</button></form></td>
                 <!--delete button-->
                 <td><form action="{{ url_for('content_set.delete', id1 = con.id) }}" method="GET"></form><button class=" btn-danger" onclick="{if(confirm('Are you sure you want to delete this record?')){this.document.formname.submit();return true;}return false;}">Delete</button></form></td>
@@ -46,6 +46,7 @@
             </tr>
 
         {% endfor %}
+    
         
     </tbody>
 

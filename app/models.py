@@ -7,6 +7,11 @@ from app import db
 import sqlite3 as sql
 from migrate.versioning.schema import Table, Column
 from flask_login import UserMixin
+from sqlalchemy.orm import backref, relationship
+
+
+
+
 # the class references the content set imprted into the database
 class ContentSet(db.Model):
     __tablename__ = 'content_set'
@@ -14,16 +19,32 @@ class ContentSet(db.Model):
     location = db.Column(db.String(50)) # Field Location of the imported content set (Country)
     exproted_on = db.Column(db.Date()) # When was the content set exported from the library
     imported_on = db.Column(db.Date()) # automatically generated 
-    imported_by = db.Column(db.String(20)) # the name of user who imported the content set 
+    imported_by = db.Column(db.Integer, db.ForeignKey('user.id')) # the name of user who imported the content set 
     lib_version = db.Column(db.String(20)) # Library version 
     content = db.relationship("Content", cascade="all, delete")
-
-    def __init__(self, location, exported_on, imported_on, imported_by, lib_version):
+  
+    def __init__(self, location, exported_on, imported_on ,lib_version, imported_by):
         self.location = location
         self.exproted_on = exported_on
         self.imported_on = imported_on
-        self.imported_by = imported_by
         self.lib_version = lib_version
+        self.imported_by=imported_by
+
+        
+# the class refrence users table in database
+class User(UserMixin, db.Model):
+    __tablename__ = 'user'
+    id = db.Column(db.Integer, primary_key = True)
+    fullname = db.Column(db.String(100))
+    username = db.Column(db.String(100))
+    password = db.Column(db.String(50))
+    user_ids = db.relationship(ContentSet, backref='user', lazy = 'select' , uselist = False)
+    
+
+    def __init__(self,fullname,username,password):
+        self.fullname = fullname
+        self.username = username
+        self.password = password        
 
 # the class references the Content table in the database
 class Content(db.Model):
