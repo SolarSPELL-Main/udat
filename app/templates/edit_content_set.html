@@ -7,12 +7,11 @@
   </div>
 <div class="col wf mt-5 ml-5 mb-4">
 
-<form action="{{request.path}}" method="POST" enctype="multipart/form-data">
+<form action="{{url_for('content_set.save_edited_content', id = id)}}" method="POST" enctype="multipart/form-data">
+
       <div class="form-group">
             <label>Location:</label>
-               <input type="hidden"  name="id" value="">
-  
-               <input type="text" class="form-control" name="Location" value="{{ location }}">
+            <input type="text" class="form-control" name="Location" value="{{ location }}">
        </div>
       <div class="form-group">
             <label>Exported on:</label>
@@ -25,11 +24,11 @@
   
                <input type="date" class="form-control" name="Imported_on" value="{{ imported_on }}">
        </div>
-     <div class="form-group">
+     <!-- <div class="form-group">
              <label>Imported by:</label>
  
             <input type="text" class="form-control" name="Imported_by" value="{{ imported_by }}">
-       </div>
+       </div> -->
       <div class="form-group">
             <label>Library version:</label>
 
