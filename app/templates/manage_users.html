@@ -1,14 +1,52 @@
 
 {% extends 'base.html' %}
 {% block content %}
-    <div class="text-center">
-    <form action="">
-        <button class = "text-white btn-lg mt-4 mb-3 bg-primary-light"> Add User</button>
-    </form>
+<!--button for add users-->
+<div class="text-center">
+      
+        <button type="button" class = "text-white btn-lg mt-4 mb-3 bg-primary-light" data-toggle="modal" data-target="#exampleModalCenter1"> Add User</button>
+     
+</div>
+<!--modal linked to add user button-->
+<div class="modal fade" id="exampleModalCenter1" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter1Title" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Add User Form</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+           <form  action="{{ url_for('user_login.add_user') }}" method="POST">
+               <label for="fn">Full Name</label>
+               <input type="Enter username" name="fn" required="1">
+               <br>
+               <label for="un">Username</label>
+               <input type="Enter Username" name="un" required="1">
+               <br>
+               <label for="pw">Password</label>
+               <input type="Enter Password" name="pw" required="1"> 
+               <br>
+               <input class="form-check-input ml-4" type="checkbox" value="" id="admin" name="admin">
+               <label class="form-check-label ml-5" for="flexCheckDefault">Make Admin</label>
+               <br>
+               <button type="save" class="btn btn-primary">Add User</button>
+       
+           </form>
+        </div>
+        <div class="modal-footer">
+         
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+         
+        </div>
+      </div>
     </div>
+  </div>
+
+<!--create table of all users-->
     <div class="container -sm">
-    
-        <table class="table table-striped">
+           <table class="table table-striped">
             <thead>
                 <tr>
                     <th scope="col">ID </th>
@@ -17,7 +55,6 @@
                     <th scope="col">Password</th>
                     <th></th>
                     <th></th>
-                    
                 </tr>
             </thead>
             <tbody>
@@ -27,16 +64,52 @@
                     <td>{{user.fullname}}</td>
                     <td>{{user.username}}</td>
                     <td>{{user.password}}</td>
-
-                    
                     <!--Edit button-->
-                    <td><form action="" method="POST"><button class="btn-sm btn-block bg-primary-light text-white"> Edit</button></form></td>
-                    <!--delete button-->
-                    <td><form action="" method="GET"><button class=" btn-danger" onclick="{if(confirm('Are you sure you want to delete this record?')){this.document.formname.submit();return true;}return false;}">Delete</button></form></td>
+                    <td><button type="submit" class="btn-sm btn-block bg-primary-light text-white" data-toggle="modal" data-target="#{{user.id}}" data_id="{{user.id}}"> Edit</button></td>
+                    <!--edit form-->
+                    <div class="modal fade" id="{{user.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLongTitle">Edit User Form</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                               <form action="{{ url_for('user_login.edit_user', id = user.id)}}" method="POST" enctype="multipart/form-data">
+                                   <label for="fn">Full Name</label>                                   
+                                   <input type="text" name="fn" value="{{user.fullname}}">
+                                   <br>
+                                   <label for="un">Username</label>
+                                   <input type="text" name="un" value="{{ user.username }}">
+                                   <br>
+                                   <label for="pw">Password</label>
+                                   <input type="text" name="pw" value="{{user.password}}"> 
+                                   <br>    
+                                   <button type="save" class="btn btn-primary">Edit</button>                                                                 
+                               </form>
+                            </div>
+                            <div class="modal-footer">              
+                             
+                              <button class="btn btn-secondary" data-dismiss="modal">Close</button>
+                             
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     
-                </tr>
-
+                    <!--delete button-->
+                    <td><form action="{{ url_for('user_login.delete', id = user.id) }}" method="GET"><button class=" btn-danger" onclick="{if(confirm('Are you sure you want to delete this record?')){this.document.formname.submit();return true;}return false;}">Delete</button></form></td>
+                 </tr>
                 {% endfor %}
             </tbody>
         </table>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+           <div class="notification is-danger text-maroon">
+               {{ messages[0] }}
+           </div>
+         {% endif %}
+       {% endwith %} 
 {% endblock %}
