@@ -26,15 +26,14 @@ class User(UserMixin, db.Model):
     fullname = db.Column(db.String(100))
     username = db.Column(db.String(100))
     password = db.Column(db.String(50))
-    
+    is_admin = db.Column(db.Boolean)
     user_ids = db.relationship(ContentSet, backref='user', lazy = 'select' , uselist = False)
     
-
-    def __init__(self,fullname,username,password):
+    def __init__(self,fullname,username,password,is_admin):
         self.fullname = fullname
         self.username = username
-        self.password = password     
-
+        self.password = password
+        self.is_admin = is_admin
 # the class references the Content table in the database
 class Content(db.Model):
     __tablename__ = 'content'
