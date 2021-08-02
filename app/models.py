@@ -1,11 +1,7 @@
 from bokeh.models.annotations import Title
 from sqlalchemy.sql.type_api import BOOLEANTYPE
 from app.routes.user_login import login
-from datetime import datetime
-from datetime import date
 from app import db
-import sqlite3 as sql
-from migrate.versioning.schema import Table, Column
 from flask_login import UserMixin
 from sqlalchemy.orm import backref, relationship
 
@@ -38,13 +34,14 @@ class User(UserMixin, db.Model):
     fullname = db.Column(db.String(100))
     username = db.Column(db.String(100))
     password = db.Column(db.String(50))
+    
     user_ids = db.relationship(ContentSet, backref='user', lazy = 'select' , uselist = False)
     
 
     def __init__(self,fullname,username,password):
         self.fullname = fullname
         self.username = username
-        self.password = password        
+        self.password = password     
 
 # the class references the Content table in the database
 class Content(db.Model):
@@ -70,16 +67,4 @@ class Content(db.Model):
         self.device_type = device_type
         self.device_os = device_os
 
-# the class refrence users table in database
-class User(UserMixin,db.Model):
-    id = db.Column(db.Integer, primary_key = True)
-    fullname = db.Column(db.String(100))
-    username = db.Column(db.String(100))
-    password = db.Column(db.String(50))
-    is_admin = db.Column(db.Boolean)
-
-    def __init__(self,fullname,username,password,is_admin):
-        self.fullname = fullname
-        self.username = username
-        self.password = password
-        self.is_admin = is_admin
+    

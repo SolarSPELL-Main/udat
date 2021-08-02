@@ -15,29 +15,25 @@
       
       
                      <div class="form-group">
-                       <label>Exported on:</label>
+                       <label>Exported from Field:</label>
                        <input type="date" class="form-control" name="Exported on" required="1">
                    </div>
       
       
                      <div class="form-group">
-                       <label>Imported on:</label>
+                       <label>Imported to UDAT:</label>
                        <input type="date" class="form-control" name="Imported on" required="1">
                      </div>
                     
-                     <!-- <div class="form-group"> -->
-                      <!-- <label>Imported by:</label> -->
-                      <!-- <input type="text" class="form-control" name="Imported by" required="1"> -->
-                   <!-- </div> -->
                    
                    <div class="form-group">
-                       <label>Library version:</label>
+                       <label>Library Version:</label>
                        <input type="text" class="form-control" name="Library version" required="1">
                    </div>
    
                     <div class="file btn btn-sm btn-primary">
                         Upload
-                        <input type="file" name="csvfiles" id="file_upload" accept=".csv"/>
+                        <input type="file" name="csvfiles" id="file_upload" accept=".csv" multiple/>
                     </div>
                     
                 <form action="">
@@ -45,7 +41,13 @@
                   </form>
       
                </form>
-      
+               {% with messages = get_flashed_messages() %}
+               {% if messages %}
+                  <div class="notification is-danger text-maroon">
+                      {{ messages[0] }}
+                  </div>
+                {% endif %}
+              {% endwith %}   
    </div>
 </div>
 {% endblock content %}
