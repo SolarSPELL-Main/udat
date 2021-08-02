@@ -1,6 +1,3 @@
-from bokeh.models.annotations import Title
-from sqlalchemy.sql.type_api import BOOLEANTYPE
-from app.routes.user_login import login
 from app import db
 from flask_login import UserMixin
 
