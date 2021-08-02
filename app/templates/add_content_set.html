@@ -2,10 +2,10 @@
 
 {% block content %}
 <div class="row">
-   <div class="col wf">
-      <img src="{{url_for('static',filename='images/home-banner.jpg')}}" alt="" class="opacity-2"  width="540" height="550" >
+   <div class="col wf text-center">
+    <img src="{{url_for('static',filename='images/home-banner.jpg')}}" alt="" class="opacity-2"  width="580" height="580" >
   </div>
-<div class="col wf mt-5 ml-5 mb-4">
+<div class="col wf mt-5 mr-5 mb-4">
       
                <form  action="{{ request.path }}" method="POST" enctype="multipart/form-data">
                      <div class="form-group">

@@ -5,7 +5,13 @@
 <div class="text-center">
       
         <button type="button" class = "text-white btn-lg mt-4 mb-3 bg-primary-light" data-toggle="modal" data-target="#exampleModalCenter1"> Add User</button>
-     
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+           <div class="notification is-danger text-maroon">
+               {{ messages[0] }}
+           </div>
+         {% endif %}
+       {% endwith %}    
 </div>
 <!--modal linked to add user button-->
 <div class="modal fade" id="exampleModalCenter1" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter1Title" aria-hidden="true">
@@ -28,7 +34,8 @@
                <label for="pw">Password</label>
                <input type="Enter Password" name="pw" required="1"> 
                <br>
-               <input class="form-check-input ml-4" type="checkbox" value="" id="admin" name="admin">
+               
+               <input class="form-check-input ml-4" type="checkbox"  id="admin" name="admin">
                <label class="form-check-label ml-5" for="flexCheckDefault">Make Admin</label>
                <br>
                <button type="save" class="btn btn-primary">Add User</button>
@@ -105,11 +112,6 @@
                 {% endfor %}
             </tbody>
         </table>
-        {% with messages = get_flashed_messages() %}
-        {% if messages %}
-           <div class="notification is-danger text-maroon">
-               {{ messages[0] }}
-           </div>
-         {% endif %}
-       {% endwith %} 
+        </div>
+     
 {% endblock %}
