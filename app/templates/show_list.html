@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container -sm mt-5">
+<table class="table table-striped">
+            
+    <thead>
+    <tr>
+          <th scope="col">Title</th>
+          <th scope="col">Language</th>
+          <th scope="col">Content Type</th>
+          <th scope="col">Subject On</th>
+          <th scope="col">Parent Folder</th>
+          <th scope="col">Browser</th>
+          <th scope="col">Device Type</th>
+          <th scope="col">Device Operating System</th>
+          <th scope="col">Version</th>
+          <th scope="col">Location</th>
+    </tr>
+    </thead>
+    {% for data in y %}
+       <tbody>
+             <tr>
+            <td>{{data.Content.title}}</td>
+             <td>{{data.Content.language}}</td>
+             <td>{{data.Content.content_type}}</td>
+             <td>{{data.Content.subject}}</td>
+             <td>{{data.Content.parent_folder}}</td>
+             <td>{{data.Content.browser}}</td>
+             <td>{{data.Content.device_type}}</td>
+             <td>{{data.Content.device_os}}</td>
+             <td>{{data.ContentSet.lib_version}}</td>
+             <td>{{data.ContentSet.location}}</td>
+             </tr>
+          </tbody>
+    {% endfor %}
+    </table>
+</div>
+
+
+
+
+
+{% endblock %}

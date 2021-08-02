@@ -5,26 +5,117 @@
         <form action="{{ url_for('content.plot') }}" method="POST">
             <label for="col" class="text-primary-dark">Please select the data you wish to plot</label>
             <br>
-            <select name="col" id="col" class="form-select-lg mb-3">
-               <option value="none">--please select--</option>
-               <option value="Language">Language</option>
-               <option value="Content_Type">Content Type</option>
-               <option value="Subject">Subject</option>
-               <option value="Parent_Folder">Parent Folder</option>
-               <option value="Browser">Browser</option>
-               <option value="Device_Type">Device Type</option>
-               <option value="Device_os">Device Operating System</option>
+            <select name="col" id="col" class="form-select form-select-lg mb-3">
+               <option value="none" name="none">--please select--</option>
+               <option value="language">Language</option>
+               <option value="content_type">Content Type</option>
+               <option value="subject">Subject</option>
+               <option value="parent_folder">Parent Folder</option>
+               <option value="browser">Browser</option>
+               <option value="device_type">Device Type</option>
+               <option value="device_os">Device Operating System</option>
 
             </select>
             <br>
-            <button class="btn-sm bg-primary-light text-white">Show plot</button>
+            <label for="lang" class="text-primary-dark">Advance Filtering</label>
+            <br>
+            <select name="lang" id="lang" class="form-select-sm bg-sunglow">
+                <option value="Language">Language</option>
+               {% for value in language %}
+                  <option value="{{value[0]}}">{{value[0]}}</option>
+               {% endfor %}
+            </select>
+            &nbsp;
+            <select name="con_type" id="con_type" class="form-select-sm bg-sunglow ">
+                <option value="content_type">Content Type</option>
+                {% for value in content_type %}
+                   <option value="{{value[0]}}">{{value[0]}}</option>
+                {% endfor %}
+             </select>
+             &nbsp;
+             <select name="subject" id="subject" class="form-select-sm bg-sunglow">
+                 <option value="subject">Subject</option>
+                {% for value in subject %}
+                   <option value="{{value[0]}}">{{value[0]}}</option>
+                {% endfor %}
+             </select>
+             &nbsp;
+             <select name="parent_folder" id="parent_folder" class="form-select-sm bg-sunglow">
+                 <option value="parent_folder">Parent Folder</option>
+                {% for value in parent_folder %}
+                   <option value="{{value[0]}}">{{value[0]}}</option>
+                {% endfor %}
+             </select>
+             &nbsp;
+             <select name="browser" id="browser" class="form-select-sm bg-sunglow">
+                 <option value="browser">Browser</option>
+                {% for value in browser %}
+                   <option value="{{value[0]}}">{{value[0]}}</option>
+                {% endfor %}
+             </select>
+             
+             <br>
+             <br>
+             <select name="device_type" id="device_type" class="form-select-sm bg-sunglow">
+                 <option value="device_type">Device Type</option>
+                {% for value in device_type %}
+                   <option value="{{value[0]}}">{{value[0]}}</option>
+                {% endfor %}
+             </select>
+             &nbsp;
+             <select name="device_os" id="device_os" class="form-select-sm bg-sunglow">
+                 <option value="device_os">Device Operating System</option>
+                {% for value in device_os %}
+                   <option value="{{value[0]}}">{{value[0]}}</option>
+                {% endfor %}
+             </select>
+             &nbsp;
+
+             <select name="lib_version" id="lib_version" class="form-select-sm bg-sunglow">
+               <option value="lib_version">Version</option>
+              {% for value in version  %}
+                 <option value="{{value[0]}}">{{value[0]}}</option>
+              {% endfor %}
+           </select>
+           &nbsp;
+
+           <select name="location" id="location" class="form-select-sm bg-sunglow">
+            <option value="location"> location </option>
+           {% for value in location %}
+              <option value="{{value[0]}}">{{value[0]}}</option>
+           {% endfor %}
+        </select>
+        &nbsp;
+             
+            <br>
+            <br>
+            
+            <button name="submit_button" class="btn-sm bg-primary-light text-white mb-4" value="plot">Show plot</button>
+         
+            <button name="submit_button" class="btn-sm bg-primary-light text-white mb-4" value="list">Show List</button>
+           
+            <br>
+            
 
         </form>
+        
+       
     </div>
+    
     <div class="col wf mt-5">
-        {{ div|safe }}
-        {{ script|safe }}
+      {% with messages = get_flashed_messages() %}
+      {% if messages %}
+         <div class="notification is-danger text-maroon text-center mt-5">
+             {{ messages[0] }}
+         </div>
+      {% endif %}
+      {% endwith %}  
+      
+
+      {{ div|safe }}
+      {{ script|safe }}
 
     </div>
+    
 </div>
 {% endblock %}

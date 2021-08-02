@@ -3,10 +3,6 @@ from sqlalchemy.sql.type_api import BOOLEANTYPE
 from app.routes.user_login import login
 from app import db
 from flask_login import UserMixin
-from sqlalchemy.orm import backref, relationship
-
-
-
 
 # the class references the content set imprted into the database
 class ContentSet(db.Model):
@@ -25,7 +21,6 @@ class ContentSet(db.Model):
         self.imported_on = imported_on
         self.lib_version = lib_version
         self.imported_by=imported_by
-
         
 # the class refrence users table in database
 class User(UserMixin, db.Model):

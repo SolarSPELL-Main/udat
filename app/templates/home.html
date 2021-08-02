@@ -1,13 +1,45 @@
-{% extends "base.html" %}
-{% block content %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="../static/css/styles.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <!--Title name -->
+    {% if title%}
+    <title>{{title}}</title>
+    {%else%}
+    <title>UDAT</title>
+    {%endif%}
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bokeh/1.2.0/bokeh.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bokeh/1.2.0/bokeh-widgets.css" rel="stylesheet" type="text/css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bokeh/1.2.0/bokeh-tables.css" rel="stylesheet" type="text/css">
 
-<!--banner image-->
-<img src="{{url_for('static',filename='images/home-banner.jpg')}}" alt="" class="opacity-2"  width="420" height="430" >
+  </head>
+  <body class="bg">
+
+    <!--Navigation bar-->
+    <nav class="navbar navbar-expand-xl navbar-dark bg-primary-light">
+      <div class="container-fluid">
+        <a class="navbar-brand small"  href="{{ url_for('main.show') }}" >
+            <img src="{{url_for('static', filename='images/logo.png')}}" width="50" height="50" alt="solarSPELL">
+            &nbsp; SolarSPELL
+        </a>
+        {% if title != 'login' %}
+        <form action="{{ url_for('user_login.logout') }}" method="POST"><button class="btn-sm btn-block bg-primary-light text-white"> logout</button></form>
+        {%endif%}
+      </div> 
+    
+    </nav>
+
 
 <!--buttons for show content & content analysis-->
 
-<div class="btn col-md-4 col-md-offset-4 ml-4">
-  <h3>Welcome {{ current_user.fullname}}</h3>
+<div class="col-md-6 offset-md-3 text-center">
+  <h3 class="mt-4">Welcome {{ current_user.fullname}}</h3>
   <form action="{{ url_for('content_set.show_all') }}">
   <button class="bg-sunglow btn-lg btn-block mt-4" >Show Contents</button> <br><br>
   </form>
@@ -21,6 +53,27 @@
   {% endif %}
 
 </div>
+
    
     
-{% endblock %}
+<!--Footer-->
+<footer class="footer bg-primary-light">
+  <div class="container">
+     <div class="row ">
+       <div class="col-lg-6 col-md-12 mb-4 mb-md-0">
+         <h6 class="text-white mt-3" >Usage Data Analysis Tool</h6>
+          <p class="text-white" style="font-size: small;">
+          Where you can easily analyze and visualize the SolarSPELL's library usage data.
+          <br>2021
+          </p>
+       </div>
+     </div>
+  </div>
+  
+</footer>
+
+</body>
+<script src="https://cdn.bokeh.org/bokeh/release/bokeh-2.3.1.min.js"></script>
+<script src="https://cdn.bokeh.org/bokeh/release/bokeh-widgets-2.3.1.min.js"></script>
+<script src="https://cdn.bokeh.org/bokeh/release/bokeh-tables-2.3.1.min.js"></script>
+</html>

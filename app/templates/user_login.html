@@ -1,24 +1,58 @@
-{% extends 'base.html'%}
-{% block content %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="../static/css/styles.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <!--Title name -->
+    {% if title%}
+    <title>{{title}}</title>
+    {%else%}
+    <title>UDAT</title>
+    {%endif%}
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bokeh/1.2.0/bokeh.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bokeh/1.2.0/bokeh-widgets.css" rel="stylesheet" type="text/css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bokeh/1.2.0/bokeh-tables.css" rel="stylesheet" type="text/css">
+
+  </head>
+  <body>
+
+    <!--Navigation bar-->
+    <nav class="navbar navbar-expand-xl navbar-dark bg-primary-light">
+      <div class="container-fluid">
+        <a class="navbar-brand small"  href="{{ url_for('main.show') }}" >
+            <img src="{{url_for('static', filename='images/logo.png')}}" width="50" height="50" alt="solarSPELL">
+            &nbsp; SolarSPELL
+        </a>
+        {% if title != 'login' %}
+        <form action="{{ url_for('user_login.logout') }}" method="POST"><button class="btn-sm btn-block bg-primary-light text-white"> logout</button></form>
+        {%endif%}
+      </div> 
+    
+    </nav>
 
 
     <div class="row">
-        <div class="col wf">
-            <img src="{{url_for('static',filename='images/home-banner.jpg')}}" alt="" class="opacity-2"  width="420" height="430" >
-        </div>
-        <div class="col wf float-left">
-           
-
-                        <form method="POST" action="{{ url_for('user_login.login') }}" class="mt-5 mr-5">
-                                <label for="uname"> Username</label>&nbsp;
-                                <input type="text" placeholder="Enter Username" name="uname1" class="form-control" required>
-                                <label for="psw">Password</label> &nbsp;
-                                <input type="Password" placeholder="Enter Password" name="psw1" class="form-control"  required>
-                                <br>
-                                <button type="submit" class="btn btn-primary btn-block">Login</button> 
+        <div class="col wf ml-5">
+            <div class="container -sm">
+                <div class="form-group row">
+                    <form method="POST" action="{{ url_for('user_login.login') }}" class="mt-5 mr-5">
+                        <label class="text-primary-dark" for="uname"><h5> Username</h5></label>&nbsp;
+                        <input type="text" placeholder="Enter Username" name="uname1" class="form-control" required>
+                        <br>
+                        <label class="text-primary-dark" for="psw"><h5>Password</h5></label> &nbsp;
+                        <input type="Password" placeholder="Enter Password" name="psw1" class="form-control"  required>
+                        <br>
+                        <button type="submit" class="btn btn-primary btn-block">Login</button> 
                         </form>
                         <br>
-                   
+                </div>     
+            </div> 
+            
                
                     {% with messages = get_flashed_messages() %}
                      {% if messages %}
@@ -32,16 +66,32 @@
 
         </div>
 
-          
+        <div class="col text-center">
+          <img src="{{url_for('static', filename='images/logo.png')}}" class="mt-5" height="250" width="250" alt="">
+        </div>  
         
     </div>
+    
 
- 
-
-
+ <!--Footer-->
+<footer class="footer bg-primary-light">
+    <div class="container">
+       <div class="row ">
+         <div class="col-lg-6 col-md-12 mb-4 mb-md-0">
+           <h6 class="text-white mt-3" >Usage Data Analysis Tool</h6>
+            <p class="text-white" style="font-size: small;">
+            Where you can easily analyze and visualize the SolarSPELL's library usage data.
+            <br>2021
+            </p>
+         </div>
+       </div>
+    </div>
+    
+  </footer>
   
-   
-
-
- 
-{% endblock %}
+  </body>
+  <script src="https://cdn.bokeh.org/bokeh/release/bokeh-2.3.1.min.js"></script>
+  <script src="https://cdn.bokeh.org/bokeh/release/bokeh-widgets-2.3.1.min.js"></script>
+  <script src="https://cdn.bokeh.org/bokeh/release/bokeh-tables-2.3.1.min.js"></script>
+  </html>
+  
