@@ -5,15 +5,14 @@ from flask_login import UserMixin
 class ContentSet(db.Model):
     __tablename__ = 'content_set'
     id = db.Column(db.Integer, primary_key = True)
-    location = db.Column(db.String(50)) # Field Location of the imported content set (Country)
     exproted_on = db.Column(db.Date()) # When was the content set exported from the library
     imported_on = db.Column(db.Date()) # automatically generated 
     imported_by = db.Column(db.Integer, db.ForeignKey('user.id')) # the name of user who imported the content set 
     lib_version = db.Column(db.String(20)) # Library version 
     content = db.relationship("Content", cascade="all, delete")
+    location = db.Column(db.Integer, db.ForeignKey('location.id'))
   
-    def __init__(self, location, exported_on, imported_on ,lib_version, imported_by):
-        self.location = location
+    def __init__(self, exported_on, imported_on ,lib_version, imported_by):
         self.exproted_on = exported_on
         self.imported_on = imported_on
         self.lib_version = lib_version
@@ -34,6 +33,7 @@ class User(UserMixin, db.Model):
         self.username = username
         self.password = password
         self.is_admin = is_admin
+
 # the class references the Content table in the database
 class Content(db.Model):
     __tablename__ = 'content'
@@ -57,5 +57,27 @@ class Content(db.Model):
         self.browser = browser
         self.device_type = device_type
         self.device_os = device_os
+
+# the class references the Country table in the database
+class Country(db.Model):
+    __tablename__ = 'country'
+    id = db.Column(db.Integer, primary_key = True)
+    name = db.Column(db.String(100))
+    location = db.relationship("Location", cascade="all, delete")
+
+    def __init__(self,name):
+        self.name = name
+
+# the class references the Location table in the database
+class Location(db.Model):
+    __tablename__ = 'location'
+    id = db.Column(db.Integer, primary_key = True)
+    name = db.Column(db.String(100))
+    country_id = db.Column(db.Integer, db.ForeignKey('country.id'))
+    contentset = db.relationship("ContentSet", cascade="all, delete")
+
+    def __init__(self,name):
+        self.name = name
+  
 
     

@@ -1,10 +1,8 @@
 
 from flask import Blueprint, render_template, url_for,request,flash,redirect
-from werkzeug.security import generate_password_hash, check_password_hash
 import app.models 
 from app import db
 from flask_login import login_user,current_user,logout_user
-import sqlite3 as sql
 from app.models import User
 
 
@@ -117,6 +115,13 @@ def delete(id):
             print(e)
     else:
         return render_template("user_login.html", title='login')     
+
+@user_login.route('/admin_tool/',methods=['GET','POST'])
+def admin_tool():
+    if current_user.is_authenticated:
+        return render_template('admin_tool.html',
+                                
+                                title='Admin Tool')
 
 
 

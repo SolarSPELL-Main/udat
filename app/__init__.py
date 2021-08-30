@@ -22,6 +22,7 @@ from app.routes.main import main
 from app.routes.content_set import content_set
 from app.routes.user_login import user_login
 from app.routes.content import content
+from app.routes.countries import countries
 
 db.init_app(app)
 
@@ -40,6 +41,8 @@ app.register_blueprint(main)
 app.register_blueprint(content_set)
 app.register_blueprint(user_login)
 app.register_blueprint(content)
+app.register_blueprint(countries)
+
 # app.register_blueprint(xyz_module)
 # ..
 

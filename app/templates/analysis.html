@@ -17,53 +17,53 @@
 
             </select>
             <br>
-            <label for="lang" class="text-primary-dark">Advance Filtering</label>
+            <label for="lang" class="text-primary-dark">Advanced Filtering</label>
             <br>
-            <select name="lang" id="lang" class="form-select-sm bg-sunglow">
+            <select name="lang" id="lang" class="form-select form-select-sm bg-sunglow">
                 <option value="Language">Language</option>
                {% for value in language %}
                   <option value="{{value[0]}}">{{value[0]}}</option>
                {% endfor %}
             </select>
             &nbsp;
-            <select name="con_type" id="con_type" class="form-select-sm bg-sunglow ">
+            <select name="con_type" id="con_type" class="form-select form-select-sm bg-sunglow ">
                 <option value="content_type">Content Type</option>
                 {% for value in content_type %}
                    <option value="{{value[0]}}">{{value[0]}}</option>
                 {% endfor %}
              </select>
              &nbsp;
-             <select name="subject" id="subject" class="form-select-sm bg-sunglow">
+             <select name="subject" id="subject" class="form-select form-select-sm bg-sunglow">
                  <option value="subject">Subject</option>
                 {% for value in subject %}
                    <option value="{{value[0]}}">{{value[0]}}</option>
                 {% endfor %}
              </select>
              &nbsp;
-             <select name="parent_folder" id="parent_folder" class="form-select-sm bg-sunglow">
+             <select name="parent_folder" id="parent_folder" class="form-select form-select-sm bg-sunglow">
                  <option value="parent_folder">Parent Folder</option>
                 {% for value in parent_folder %}
                    <option value="{{value[0]}}">{{value[0]}}</option>
                 {% endfor %}
              </select>
              &nbsp;
-             <select name="browser" id="browser" class="form-select-sm bg-sunglow">
+             <select name="browser" id="browser" class="form-select form-select-sm bg-sunglow">
                  <option value="browser">Browser</option>
                 {% for value in browser %}
                    <option value="{{value[0]}}">{{value[0]}}</option>
                 {% endfor %}
              </select>
              
+            
              <br>
-             <br>
-             <select name="device_type" id="device_type" class="form-select-sm bg-sunglow">
+             <select name="device_type" id="device_type" class="form-select form-select-sm bg-sunglow">
                  <option value="device_type">Device Type</option>
                 {% for value in device_type %}
                    <option value="{{value[0]}}">{{value[0]}}</option>
                 {% endfor %}
              </select>
              &nbsp;
-             <select name="device_os" id="device_os" class="form-select-sm bg-sunglow">
+             <select name="device_os" id="device_os" class="form-select form-select-sm bg-sunglow">
                  <option value="device_os">Device Operating System</option>
                 {% for value in device_os %}
                    <option value="{{value[0]}}">{{value[0]}}</option>
@@ -71,7 +71,7 @@
              </select>
              &nbsp;
 
-             <select name="lib_version" id="lib_version" class="form-select-sm bg-sunglow">
+             <select name="lib_version" id="lib_version" class="form-select form-select-sm bg-sunglow">
                <option value="lib_version">Version</option>
               {% for value in version  %}
                  <option value="{{value[0]}}">{{value[0]}}</option>
@@ -79,7 +79,7 @@
            </select>
            &nbsp;
 
-           <select name="location" id="location" class="form-select-sm bg-sunglow">
+           <select name="location" id="location" class="form-select form-select-sm bg-sunglow">
             <option value="location"> location </option>
            {% for value in location %}
               <option value="{{value[0]}}">{{value[0]}}</option>
