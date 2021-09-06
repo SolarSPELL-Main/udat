@@ -2,9 +2,9 @@ from bokeh.models.annotations import Title
 from bokeh.models.sources import ColumnDataSource, ColumnarDataSource
 from bokeh.models.widgets.tables import DataTable, TableColumn
 from flask.helpers import flash
-from sqlalchemy.sql.expression import table
+from sqlalchemy.sql.expression import join, table
 from sqlalchemy.sql import text
-from app.models import Content, ContentSet
+from app.models import Content, ContentSet, Country, Location
 from flask import Blueprint, render_template,request
 from flask_login import current_user
 from app import db
@@ -30,7 +30,8 @@ def plot():
            device_type = db.session.query(Content.device_type).group_by("device_type").all()
            device_os = db.session.query(Content.device_os).group_by("device_os").all()
            version = db.session.query(ContentSet.lib_version).group_by("lib_version").all()
-           location = db.session.query(ContentSet.location).group_by("location").all()
+           location = db.session.query(Location.name).group_by("name").all()
+           country = db.session.query(Country.name).group_by("name").all()
            if request.method == 'POST':
                output_file("analysis.html") # plot output file
                
@@ -44,6 +45,7 @@ def plot():
                selected_deviceOS = request.form.get('device_os')
                selected_version = request.form.get('lib_version')
                selected_location = request.form.get('location')
+               selected_country = request.form.get('country')
                
                filters_used = []
                queries = []
@@ -72,11 +74,20 @@ def plot():
                    queries.append(ContentSet.lib_version==selected_version)
                    filters_used.append("Version("+selected_version+")")
                if selected_location != "location":
-                   queries.append(ContentSet.location==selected_location)
+                   queries.append(Location.name==selected_location)
                    filters_used.append("Location("+selected_location+")")
+               if selected_country != "country":
+                   queries.append(Country.name==selected_country)
+                   filters_used.append("Country("+selected_country+")") 
            
                
-               x = db.session.query(getattr(Content,selected_col)).join(ContentSet,ContentSet.id == Content.set_id).filter(*queries).all()
+               x = db.session.query(getattr(Content,selected_col)). join(ContentSet,ContentSet.id == Content.set_id).\
+                   join(Location,Location.country_id == Country.id ).\
+                   join(Country,Country.id == ContentSet.location).\
+                   filter(*queries).all()
+                   
+                   # all()
+               print(x)
             
                if x == []:
                    flash('No data available with the selected filters')
@@ -108,15 +119,16 @@ def plot():
                                                         content_type = content_type, subject = subject,
                                                         parent_folder = parent_folder, browser = browser,
                                                         device_type = device_type,
-                                                       device_os = device_os, version = version, location=location)
+                                                       device_os = device_os, version = version, location=location,country=country)
                    else:
-                       y = db.session.query(Content,ContentSet).join(ContentSet,ContentSet.id == Content.set_id).filter(*queries).all()
-                       
+                       y = db.session.query(Content,ContentSet,Location).join(ContentSet,ContentSet.id == Content.set_id).\
+                                                                join(Location,Location.country_id == ContentSet.location ).\
+                                                                filter(*queries).all()
                    return render_template('show_list.html',y=y, language=language,
                                                 content_type = content_type, subject = subject,
                                                 parent_folder = parent_folder, browser = browser,
                                                 device_type = device_type,
-                                                device_os = device_os, version = version, location=location)
+                                                device_os = device_os, version = version, location=location,country=country)
 
 
        except Exception as e:
@@ -126,5 +138,5 @@ def plot():
                                         content_type = content_type, subject = subject,
                                         parent_folder = parent_folder, browser = browser,
                                         device_type = device_type,
-                                      device_os = device_os, version=version, location=location)
+                                      device_os = device_os, version=version, location=location,country=country)
 

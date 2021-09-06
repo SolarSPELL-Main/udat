@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<!--button for add users-->
+<div class="text-center">
+      
+    <button type="button" class = "text-white btn-lg mt-4 mb-3 bg-primary-light" data-toggle="modal" data-target="#exampleModalCenter1"> Add Location </button>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+       <div class="notification is-danger text-maroon">
+           {{ messages[0] }}
+       </div>
+     {% endif %}
+   {% endwith %}    
+</div>
+<!--modal linked to add country button-->
+<div class="modal fade" id="exampleModalCenter1" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter1Title" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Add Location Form</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+         <form  action="{{ url_for('location.add_location') }}" method="POST">
+             <label for="ln">Location Name</label>
+             <input type="Enter username" name="ln" required="1">
+             <br>
+
+             <select name="coun" id="coun" class="form-select form-select-sm ">
+              <p>Country name</p>
+              {% for value in countries %}
+                 <option value="{{value[0]}}">{{value[0]}}</option>
+              {% endfor %}
+            </select>
+            <br>
+             
+             <button type="save" class="btn btn-primary">Add Location</button>
+     
+         </form>
+      </div>
+      <div class="modal-footer">
+       
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+       
+      </div>
+    </div>
+  </div>
+  </div>
+  
+  
+
+<!--create table of all locations-->
+<div class="container -sm">
+    <table class="table table-striped">
+     <thead>
+         <tr>
+             <th scope="col">ID </th>
+             <th scope="col">Location</th>
+             <th scope="col">Country</th>
+
+             <th></th>
+             <th></th>
+         </tr>
+     </thead>
+     <tbody>
+         {% for location in locations %}
+         <tr>
+             <th scope="row">{{location.Location.id}}</th>
+             <td>{{location.Location.name}}</td>
+             <td>{{location.Country.name}}</td>
+
+          
+         <!--Edit button-->
+         <td><button type="submit" class="btn-sm btn-block bg-primary-light text-white" data-toggle="modal" data-target="#{{location.Location.id}}" data_id="{{location.Location.id}}"> Edit</button></td>
+         <!--edit form-->
+         <div class="modal fade" id="{{location.Location.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+             <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLongTitle">Edit Location Form</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                   <form action="{{ url_for('location.edit_location', id = location.Location.id)}}" method="POST" enctype="multipart/form-data">
+                       <label for="ln">Location Name</label>                                   
+                       <input type="text" name="ln" value="{{location.name}}">
+                       <br>
+                       
+                       <button type="save" class="btn btn-primary">Edit</button>                                                                 
+                   </form>
+                </div>
+                <div class="modal-footer">              
+                 
+                  <button class="btn btn-secondary" data-dismiss="modal">Close</button>
+                 
+                </div>
+              </div>
+            </div>
+          </div>
+          <!--delete button-->
+           <td><form action="{{ url_for('location.delete', id = location.Location.id) }}" method="GET"><button class=" btn-danger" onclick="{if(confirm('Are you sure you want to delete this record?')){this.document.formname.submit();return true;}return false;}">Delete</button></form></td>
+        </tr>
+           
+{% endfor %}  
+</tbody>
+</table>       
+
+{% endblock %}

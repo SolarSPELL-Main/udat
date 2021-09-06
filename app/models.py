@@ -5,12 +5,12 @@ from flask_login import UserMixin
 class ContentSet(db.Model):
     __tablename__ = 'content_set'
     id = db.Column(db.Integer, primary_key = True)
+    location = db.Column(db.Integer, db.ForeignKey('location.id'))
     exproted_on = db.Column(db.Date()) # When was the content set exported from the library
     imported_on = db.Column(db.Date()) # automatically generated 
     imported_by = db.Column(db.Integer, db.ForeignKey('user.id')) # the name of user who imported the content set 
     lib_version = db.Column(db.String(20)) # Library version 
     content = db.relationship("Content", cascade="all, delete")
-    location = db.Column(db.Integer, db.ForeignKey('location.id'))
   
     def __init__(self, exported_on, imported_on ,lib_version, imported_by):
         self.exproted_on = exported_on

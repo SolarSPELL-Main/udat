@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template,request,flash,redirect,url_for
 from flask_login import current_user
 import app.models 
-from app.models import Country
+from app.models import Country, Location
 from app import db
 
 countries= Blueprint('countries', __name__, url_prefix='/countries')
@@ -10,10 +10,10 @@ countries= Blueprint('countries', __name__, url_prefix='/countries')
 def manage_countries():
     if current_user.is_authenticated:
         return render_template('manage_countries.html',
-                                country = app.models.Country.query.all(),
+                                country = db.session.query(Country).all(),
                                 title='Countries')
                                 
-# Handle adding user to database(only admins) 
+# Handle adding country to database(only admins) 
 @countries.route('/manage_countries/add_country',methods=['GET','POST'])
 def add_country():
     if request.method == 'POST':

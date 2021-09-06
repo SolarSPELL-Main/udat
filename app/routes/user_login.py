@@ -7,7 +7,7 @@ from app.models import User
 
 
 #Make the login page the first page the user sees when they go to UDAT website
-user_login = Blueprint('user_login', __name__, url_prefix='/')
+user_login = Blueprint('user_login', __name__, url_prefix='/user')
 
 
 #Return login page if user is not logged in, and if user is logged in it will return home

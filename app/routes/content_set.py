@@ -1,8 +1,10 @@
 import datetime
+from re import L
 from flask import Blueprint, render_template,flash, request,url_for
 from sqlalchemy.orm import session
 from sqlalchemy.sql.expression import false, true
-from app.models import Content, ContentSet, User
+from sqlalchemy.sql.schema import Column
+from app.models import Content, ContentSet, Country, Location, User
 from app import db
 import csv
 from io import TextIOWrapper
@@ -21,6 +23,15 @@ content_set= Blueprint('content_set', __name__, url_prefix='/content_set')
 @content_set.route('/add', methods=['GET','POST'])
 def upload():
     if current_user.is_authenticated:
+        #handle select country and location in Add content
+        selected_country = request.form.get('Country')
+        if selected_country is None:
+            return render_template('add_content_set.html',
+                                countries = db.session.query(Country.name).group_by("name").all(),
+                                selected_country=selected_country
+                                )
+        else:
+            country_id = db.session.query(Country.id).filter_by(name = selected_country).all()
         if request.method == 'POST':
             i=0
             content_sets= []
@@ -44,18 +55,21 @@ def upload():
                 Imported_date = str(request.form['Imported on'])
                 year1, month1, day1 = map(int, Imported_date.split('-'))
                 filter_Imported_date = datetime.date(year1, month1, day1)
-                            
-                content_set = ContentSet(location=request.form['Location']
-                                                    ,exported_on=filter_Exported_date
-                                                    ,imported_on=filter_Imported_date
-                                                    ,lib_version=request.form['Library version']
-                                                    ,imported_by=current_user.id)
+                #location
+                loc = request.form.get('Location')
+                loc_id = db.session.query(Location.id).filter_by(name=loc).all()           
+                content_set = ContentSet(exported_on=filter_Exported_date,
+                                         imported_on=filter_Imported_date,
+                                         lib_version=request.form['Library version'],
+                                         imported_by=current_user.id)
 
                 db.session.add(content_set)
+                content_set.location = loc_id[0][0]
                 db.session.commit()
                 
                 ## Fetch the new ID
                 newid=content_set.id
+             
                 for i in range(len(content_sets)):
                     contentval = prepare_content_object(newid,csv.DictReader(content_sets[i].splitlines(), skipinitialspace=True))
                     db.session.bulk_insert_mappings(Content,contentval)
@@ -64,9 +78,14 @@ def upload():
                 return redirect(url_for('content_set.show_all'))
             else:
                 flash('Invalid CSV file,Please check and retry!')
-        return render_template('add_content_set.html')
+        return render_template('add_content_set.html',
+                                locations = db.session.query(Location.name).filter_by(country_id = country_id[0][0]).all(),
+                                countries = db.session.query(Country.name).group_by("name").all(),
+                                selected_country=selected_country
+                                )
     else:
-        return render_template("user_login.html", title='SolarSpell')
+        return render_template("user_login.html",
+                               title='SolarSpell')
 
 # Method to decode and set ID for FK
 def prepare_content_object(new_id, content_csv_obj):
@@ -138,7 +157,10 @@ def delete(id1):
 @content_set.route('/show_all')
 def show_all():
     if current_user.is_authenticated:
-        return render_template('show_all.html',ContentSet = ContentSet.query.all(), title='Show Content')
+        return render_template('show_all.html',ContentSet = db.session.query(ContentSet, Location,Country)\
+                                               .join(Location,Location.id == ContentSet.location)\
+                                               .join(Country, Country.id == Location.country_id).all()
+                                , title='Show Content')
     else:
         return render_template("user_login.html", title='login')
 

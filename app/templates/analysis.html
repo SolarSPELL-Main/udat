@@ -86,6 +86,15 @@
            {% endfor %}
         </select>
         &nbsp;
+
+            <select name="country" id="country" class="form-select form-select-sm bg-sunglow">
+               <option value="country"> country </option>
+            {% for value in country %}
+               <option value="{{value[0]}}">{{value[0]}}</option>
+            {% endfor %}
+            </select>
+            &nbsp;
+          
              
             <br>
             <br>
