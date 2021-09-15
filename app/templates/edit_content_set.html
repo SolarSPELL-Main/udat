@@ -7,11 +7,37 @@
   </div>
 <div class="col wf mt-5 ml-5 mb-4 mr-5">
 
+<form name="f" action="{{ url_for('content_set.select_country_edit') }}" method="GET" enctype="multipart/form-data">
+      <div class="form-group">
+            Country
+      <select name="Country" id="Country" onchange="document.f.submit();" class="form-select form-select-sm ">
+            <option value="None">please select a country</option>
+            {% for value in countries %}
+              <option value="{{value[0]}}" {% if value[0]==selected_country %} selected {% endif %}>{{value[0]}}</option>
+            {% endfor %}
+      </select>
+      </div>
+      <br>
+</form>
 <form action="{{url_for('content_set.save_edited_content', id = id)}}" method="POST" enctype="multipart/form-data">
 
       <div class="form-group">
-            <label>Location:</label>
-            <input type="text" class="form-control" name="Location" value="{{ location }}">
+            {% if selected_country %}
+            <div class="form-group">
+            Location
+            <select name="Location" id="coun" onchange="document.f.submit();" class="form-select form-select-sm ">
+              {% for value in locations %}
+
+                 <option value="{{value[0]}}">{{value[0]}}</option>
+           
+              {% endfor %}
+              
+            </select>
+            <br>
+           </div>
+           {% endif %}
+        
+          
        </div>
       <div class="form-group">
             <label>Exported from Field:</label>

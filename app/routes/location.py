@@ -3,7 +3,7 @@ from flask import Blueprint, render_template,request,flash,redirect,url_for
 from flask_login import current_user
 from sqlalchemy.orm import aliased
 import app.models 
-from app.models import Country, Location
+from app.models import ContentSet, Country, Location
 from app import db
 
 location= Blueprint('location', __name__, url_prefix='/location')
@@ -15,6 +15,7 @@ def manage_locations():
         return render_template('manage_location.html',
                              locations = db.session.query(Location, Country).join(Country,Country.id == Location.country_id).all(),
                              countries = countries,
+                             contents = db.session.query(ContentSet.location).all(),
                              title='Locations')
 
 @location.route('/manage_location/add_location',methods=['GET','POST'])
@@ -46,12 +47,14 @@ def add_location():
 def edit_location(id):
     if request.method == 'POST':    
         name = request.form['ln']
-        
+        country_name = request.form['Country']
+        country_id = db.session.query(Country.id).filter_by(name=country_name).all()
         #Check if username exists in database, we can't have 2 same usernames 
         try:
            value = app.models.Location.query.filter_by(id=id).first()
            if db.session.query(Location).filter_by(name = name).first() is None or value.name == name:
                 value.name = name
+                value.country_id = country_id[0][0]
                 db.session.commit()
                 return redirect(url_for('location.manage_locations'))
            else:

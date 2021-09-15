@@ -86,8 +86,7 @@ def plot():
                    join(Country,Country.id == ContentSet.location).\
                    filter(*queries).all()
                    
-                   # all()
-               print(x)
+                   
             
                if x == []:
                    flash('No data available with the selected filters')

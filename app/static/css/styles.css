@@ -2,10 +2,7 @@
 @import url("//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css");
 @import '../theme/bootstrap/css/bootstrap.min.css';
 
-@font-face{
-  font-family:Roboto;
-  src:url("assets/static/Roboto-Regular.ttf")
-}
+
 * {
   font-family: 'Roboto', 'Helvetica' , 'sans-serif';
 }

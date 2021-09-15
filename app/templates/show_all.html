@@ -3,10 +3,77 @@
 {% block content %}
 <!-- Button at the top of the page to add content-->
 <div class="text-center">
-    <form action="{{ url_for('content_set.upload') }}">
-    <button class = "text-white btn-lg mt-4 mb-3 bg-primary-light" onclick="">Add a Content</button>
-    </form>
+    
+    <button type="button"  data-toggle="modal" data-target="#exampleModalCenter1" class = "text-white btn-lg mt-4 mb-3 bg-primary-light" onclick="">Add a Content</button>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+       <div class="notification is-danger text-maroon">
+           {{ messages[0] }}
+       </div>
+     {% endif %}
+   {% endwith %}
 </div>
+<!--modal linked to add content button-->
+<div class="modal fade" id="exampleModalCenter1" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter1Title" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Add Contents Form</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form action="{{ url_for('content_set.upload') }}" method="POST" enctype="multipart/form-data">
+                   <div class="form-group">
+                     Country
+                      <select name="Country" id="Country"  class="form-select form-select-sm ">
+                         <option value="none">please select a country</option>
+                            {% for value in country %}
+                                 <option value="{{value[0]}}"> {{value[0]}} </option>
+                            {% endfor %}
+                       </select>
+                       <br>
+                     </div>
+                     <div class="form-group">
+                      Location
+                     <select name="Location" id="Location"  class="form-select form-select-sm ">
+                      {% for value in locations %}
+                        <option value="{{value[0]}}">{{value[0]}}</option>
+                      {% endfor %}
+                      </select>
+                      <br>
+                      </div>
+                      <div class="form-group">
+                      <label>Exported from Field:</label>
+                      <input type="date" class="form-control" name="Exported on" required="1">
+                       </div>
+                      <div class="form-group">
+                      <label>Imported to UDAT:</label>
+                      <input type="date" class="form-control" name="Imported on" required="1">
+                      </div>
+                      <div class="form-group">
+                      <label>Library Version:</label>
+                      <input type="text" class="form-control" name="Library version" required="1">
+                      </div>
+                      <div class="file btn btn-sm btn-primary">
+                        Upload
+                      <input type="file" name="csvfiles" id="file_upload" accept=".csv" multiple/>
+                      </div>
+                      <br><br>
+                         <button type="submit" class="btn btn-primary">Submit</button>
+                     </form>
+                         
+         </div>
+         <div class="modal-footer">
+          
+           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+  </div>
+  </div>
+  
+     
 <!-- <button class="text-white btn-lg mt-4 mb-3 bg-primary-light" onclick="" >Add a Content</button> -->
 <!-- <button type="button" class="text-white btn-lg mt-4 mb-3 bg-primary-light btn btn-success"onclick="" data-toggle="modal" data-target="#mymodal"> Add a Content</button>  -->
 
@@ -41,11 +108,69 @@
                 <td>{{con.ContentSet.user.fullname}}</td>
                 <td>{{con.ContentSet.lib_version}}</td>
                 <!-- Edit button -->
-                <td><form action="{{ url_for('content_set.edit_content', id = con.ContentSet.id) }}" method="POST"><button class="btn-sm btn-block bg-primary-light text-white"> Edit</button></form></td>
-                <!--delete button-->
-                <td><form action="{{ url_for('content_set.delete', id1 = con.ContentSet.id) }}" method="GET"><button class=" btn-danger" onclick="{if(confirm('Are you sure you want to delete this record?')){this.document.formname.submit();return true;}return false;}">Delete</button></form></td>
+                <td><button type="submit" class="btn-sm btn-block bg-primary-light text-white" data-toggle="modal" data-target="#{{con.ContentSet.id}}" data_id="{{con.ContentSet.id}}"> Edit</button></td>
+                <!--edit form-->
+         <div class="modal fade" id="{{con.ContentSet.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+             <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLongTitle">Edit Content Form</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{url_for('content_set.save_edited_content', id = con.ContentSet.id)}}" method="POST" enctype="multipart/form-data">
+                        <div class="form-group">
+                          Country
+                        <select name="country" id="country"  class="form-select form-select-sm ">
+                         <option value="{{con.Country.name}}">{{con.Country.name}}</option>
+                            {% for value in country %}
+                                 <option value="{{value[0]}}"> {{value[0]}} </option>
+                            {% endfor %}
+                         </select>
+                         
+                        </div>
+                        <br>
+
+                        <div class="form-group">
+                        Location
+                        <select name="location" id="location"  class="form-select form-select-sm">
+                          <option value="{{con.Location.name}}">{{con.Location.name}}</option>
+                          {% for value in locations %}
+                          <option value="{{value[0]}}">{{value[0]}}</option>
+                          {% endfor %}
+                        </select>
+                        <br>
+                        </div>
+                <div class="form-group">
+                     <label>Exported from Field:</label>
+                     <input type="date" class="form-control" name="Exported_on" value="{{ con.ContentSet.exproted_on }}">
+                </div>
+                <div class="form-group">
+                    <label>Imported to UDAT:</label>
+                    <input type="date" class="form-control" name="Imported_on" value="{{ con.ContentSet.imported_on }}">
+                </div>
+                <div class="form-group">
+                <label>Library Version:</label>
+                 <input type="text" class="form-control" name="Library_version" value="{{ con.ContentSet.lib_version }}">
+                </div>
+                <div class="form-group">
+                  <button class="btn btn-primary" type="Save">Save</button>
+                </div>
+                </form>
+                </div>
+                </div>
+                <div class="modal-footer">              
+                  <button class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!--delete button-->
+          <td><form action="{{ url_for('content_set.delete', id1 = con.ContentSet.id) }}" method="GET"><button class=" btn-danger" onclick="{if(confirm('Are you sure you want to delete this record?')){this.document.formname.submit();return true;}return false;}">Delete</button></form></td>
                 
-            </tr>
+         </tr>
 
         {% endfor %}
     

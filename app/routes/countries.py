@@ -11,6 +11,7 @@ def manage_countries():
     if current_user.is_authenticated:
         return render_template('manage_countries.html',
                                 country = db.session.query(Country).all(),
+                                location = db.session.query(Location.country_id).all(),
                                 title='Countries')
                                 
 # Handle adding country to database(only admins) 
@@ -25,13 +26,13 @@ def add_country():
                 db.session.add(country)
                 db.session.commit()
                 flash('Country was added!')
-                return redirect(url_for('countries.manage_countries'))
+                return render_template('manage_countries.html',country = db.session.query(Country).all())
             except Exception as e:
                 flash(str(e))
         else:
             flash(u'Username already exists')
-            return redirect(url_for('countries.manage_countries'))
-    return redirect(url_for('countries.manage_countries'))
+            return render_template('manage_countries.html',country = db.session.query(Country).all())
+    return render_template('manage_countries.html',country = db.session.query(Country).all())
 
 @countries.route('/manage_countries/edit_country/<int:id>',methods=['GET','POST'])
 def edit_country(id):
