@@ -1,7 +1,6 @@
 from os import name
 from flask import Blueprint, render_template,request,flash,redirect,url_for
 from flask_login import current_user
-from sqlalchemy.orm import aliased
 import app.models 
 from app.models import ContentSet, Country, Location
 from app import db
@@ -31,9 +30,6 @@ def add_location():
                 db.session.add(location)
                 location.country_id = country_id[0][0]
                 db.session.commit()
-                
-                
-            
                 flash('location was added!')
                 return redirect(url_for('location.manage_locations'))
             except Exception as e:
@@ -69,7 +65,9 @@ def edit_location(id):
 def delete(id):
     if current_user.is_authenticated:
         try:
-            app.models.Location.query.filter_by(id = id).delete()
+            loc = app.models.Location.query.filter_by(id = id).first()
+            db.session.delete(loc)
+            db.session.flush()
             db.session.commit()
             return redirect(url_for('location.manage_locations'))
         except Exception as e:

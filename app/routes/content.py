@@ -1,9 +1,11 @@
 from bokeh.models.annotations import Title
 from bokeh.models.sources import ColumnDataSource, ColumnarDataSource
 from bokeh.models.widgets.tables import DataTable, TableColumn
-from flask.helpers import flash
+from flask.helpers import flash, url_for
 from sqlalchemy.sql.expression import join, table
+
 from sqlalchemy.sql import text
+from werkzeug.utils import redirect
 from app.models import Content, ContentSet, Country, Location
 from flask import Blueprint, render_template,request
 from flask_login import current_user
@@ -13,13 +15,15 @@ from bokeh.embed import components
 from bokeh.io import output_file
 import pandas as pd
 from collections import Counter
+from flask_paginate import Pagination, get_page_parameter
+
 
 
 content= Blueprint('content', __name__, url_prefix='/content')
 
 
-@content.route('/analysis', methods=['POST','GET'])
-def plot():
+@content.route('/analysis/<int:page>', methods=['POST','GET'])
+def plot(page):
    if current_user.is_authenticated:
        try:
            language = db.session.query(Content.language).group_by("language").all()
@@ -34,7 +38,6 @@ def plot():
            country = db.session.query(Country.name).group_by("name").all()
            if request.method == 'POST':
                output_file("analysis.html") # plot output file
-               
                selected_col = request.form['col'] #selected option from the analysis.html
                selected_lang = request.form.get('lang')
                selected_conType = request.form.get('con_type')
@@ -79,15 +82,11 @@ def plot():
                if selected_country != "country":
                    queries.append(Country.name==selected_country)
                    filters_used.append("Country("+selected_country+")") 
-           
-               
+                          
                x = db.session.query(getattr(Content,selected_col)). join(ContentSet,ContentSet.id == Content.set_id).\
-                   join(Location,Location.country_id == Country.id ).\
-                   join(Country,Country.id == ContentSet.location).\
+                   join(Location,Location.country_id == ContentSet.location ).\
+                   join(Country,Country.id == Location.country_id).\
                    filter(*queries).all()
-                   
-                   
-            
                if x == []:
                    flash('No data available with the selected filters')
                else:
@@ -118,18 +117,14 @@ def plot():
                                                         content_type = content_type, subject = subject,
                                                         parent_folder = parent_folder, browser = browser,
                                                         device_type = device_type,
-                                                       device_os = device_os, version = version, location=location,country=country)
+                                                       device_os = device_os, version = version, location=location,country=country,queries=queries)
                    else:
-                       y = db.session.query(Content,ContentSet,Location).join(ContentSet,ContentSet.id == Content.set_id).\
+                         y = db.session.query(Content,ContentSet,Location,Country).join(ContentSet,ContentSet.id == Content.set_id).\
                                                                 join(Location,Location.country_id == ContentSet.location ).\
-                                                                filter(*queries).all()
-                   return render_template('show_list.html',y=y, language=language,
-                                                content_type = content_type, subject = subject,
-                                                parent_folder = parent_folder, browser = browser,
-                                                device_type = device_type,
-                                                device_os = device_os, version = version, location=location,country=country)
-
-
+                                                                join(Country,Country.id == Location.country_id).\
+                                                                filter(*queries).paginate(per_page=7,page=page,error_out=True)
+                   return render_template('show_list.html',y=y)
+                   
        except Exception as e:
            print(e)
        
@@ -139,3 +134,4 @@ def plot():
                                         device_type = device_type,
                                       device_os = device_os, version=version, location=location,country=country)
 
+  

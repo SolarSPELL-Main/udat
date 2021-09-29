@@ -2,7 +2,7 @@
 {% block content %}
 <div class="row">
     <div class="col wf mt-5 ml-5">
-        <form action="{{ url_for('content.plot') }}" method="POST">
+        <form action="{{ url_for('content.plot', page=1) }}" method="POST">
             <label for="col" class="text-primary-dark">Please select the data you wish to plot</label>
             <br>
             <select name="col" id="col" class="form-select form-select-lg mb-3">
@@ -81,12 +81,11 @@
 
            <select name="location" id="location" class="form-select form-select-sm bg-sunglow">
             <option value="location"> location </option>
-           {% for value in location %}
-              <option value="{{value[0]}}">{{value[0]}}</option>
-           {% endfor %}
-        </select>
-        &nbsp;
-
+            {% for value in location %}
+               <option value="{{value[0]}}">{{value[0]}}</option>
+            {% endfor %}
+            </select>
+             &nbsp;
             <select name="country" id="country" class="form-select form-select-sm bg-sunglow">
                <option value="country"> country </option>
             {% for value in country %}
@@ -94,21 +93,13 @@
             {% endfor %}
             </select>
             &nbsp;
-          
-             
             <br>
             <br>
-            
             <button name="submit_button" class="btn-sm bg-primary-light text-white mb-4" value="plot">Show plot</button>
-         
             <button name="submit_button" class="btn-sm bg-primary-light text-white mb-4" value="list">Show List</button>
-           
             <br>
-            
-
-        </form>
-        
-       
+      </form>
+           
     </div>
     
     <div class="col wf mt-5">

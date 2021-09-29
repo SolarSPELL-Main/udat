@@ -15,7 +15,7 @@
 </div>
 <!--modal linked to add content button-->
 <div class="modal fade" id="exampleModalCenter1" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter1Title" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLongTitle">Add Contents Form</h5>
@@ -28,12 +28,12 @@
                    <div class="form-group">
                      Country
                       <select name="Country" id="Country"  class="form-select form-select-sm ">
-                         <option value="none">please select a country</option>
+                         <option value="none" >please select a country</option>
                             {% for value in country %}
                                  <option value="{{value[0]}}"> {{value[0]}} </option>
                             {% endfor %}
                        </select>
-                       <br>
+                      
                      </div>
                      <div class="form-group">
                       Location
@@ -42,7 +42,7 @@
                         <option value="{{value[0]}}">{{value[0]}}</option>
                       {% endfor %}
                       </select>
-                      <br>
+                     
                       </div>
                       <div class="form-group">
                       <label>Exported from Field:</label>
@@ -59,8 +59,8 @@
                       <div class="file btn btn-sm btn-primary">
                         Upload
                       <input type="file" name="csvfiles" id="file_upload" accept=".csv" multiple/>
-                      </div>
-                      <br><br>
+                      </div> &nbsp; &nbsp;
+                      
                          <button type="submit" class="btn btn-primary">Submit</button>
                      </form>
                          
@@ -79,9 +79,19 @@
 
 
 <!-- Create Table which shows all content sets -->
+
 <div class="container -sm">
-  
-<table class="table table-striped">
+  <nav aria-label="...">
+    <ul class="pagination">
+      {% for page in ContentSet.iter_pages() %}
+      <li class="page-item"> 
+        <a class="page-link" href="{{ url_for('content_set.show_all', page_num=page)}}">{{page}}</a>
+      </li>
+      {% endfor %}
+      
+    </ul>
+  </nav>
+ <table class="table table-striped">
     <thead>
         <tr>
             <th scope="col">ID</th>
@@ -98,7 +108,7 @@
     <tbody>
         
         
-        {% for con in ContentSet %}
+        {% for con in ContentSet.items %}
             <tr>
                 <th scope="row">{{con.ContentSet.id}}</th>
                 <td>{{con.Country.name}}</td>
@@ -111,7 +121,7 @@
                 <td><button type="submit" class="btn-sm btn-block bg-primary-light text-white" data-toggle="modal" data-target="#{{con.ContentSet.id}}" data_id="{{con.ContentSet.id}}"> Edit</button></td>
                 <!--edit form-->
          <div class="modal fade" id="{{con.ContentSet.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-dialog modal-lg" role="document">
              <div class="modal-content">
                 <div class="modal-header">
                   <h5 class="modal-title" id="exampleModalLongTitle">Edit Content Form</h5>
@@ -131,8 +141,6 @@
                          </select>
                          
                         </div>
-                        <br>
-
                         <div class="form-group">
                         Location
                         <select name="location" id="location"  class="form-select form-select-sm">
@@ -141,7 +149,6 @@
                           <option value="{{value[0]}}">{{value[0]}}</option>
                           {% endfor %}
                         </select>
-                        <br>
                         </div>
                 <div class="form-group">
                      <label>Exported from Field:</label>
@@ -167,8 +174,13 @@
               </div>
             </div>
           </div>
+          
           <!--delete button-->
-          <td><form action="{{ url_for('content_set.delete', id1 = con.ContentSet.id) }}" method="GET"><button class=" btn-danger" onclick="{if(confirm('Are you sure you want to delete this record?')){this.document.formname.submit();return true;}return false;}">Delete</button></form></td>
+          <td>
+            <form name="f1" action="{{ url_for('content_set.delete', id1 = con.ContentSet.id) }}" method="GET">
+              <button class=" btn-danger" onclick="{if(confirm('Are you sure you want to delete this record?')){this.document.f1.submit();return true;}return false;}">Delete</button>
+            </form>
+          </td>
                 
          </tr>
 
@@ -178,5 +190,6 @@
     </tbody>
 
 </table>
+
 </div>
 {% endblock content %}

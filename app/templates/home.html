@@ -40,10 +40,10 @@
 
 <div class="col-md-6 offset-md-3 text-center">
   <h3 class="mt-4">Welcome {{ current_user.fullname}}</h3>
-  <form action="{{ url_for('content_set.show_all') }}">
+  <form action="{{ url_for('content_set.show_all',page_num=1) }}">
   <button class="bg-sunglow btn-lg btn-block mt-4" >Show Contents</button> <br><br>
   </form>
-  <form action="{{ url_for('content.plot') }}">
+  <form action="{{ url_for('content.plot',page=1) }}">
   <button class="bg-sunglow  btn-lg btn-block "  >Content Analysis</button><br><br>
   </form>
   {% if current_user.is_admin %}
