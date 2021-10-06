@@ -127,7 +127,7 @@ def plot(page_num):
                     y = db.session.query(Content,ContentSet,Location,Country).join(ContentSet,ContentSet.id == Content.set_id).\
                                          join(Location,Location.country_id == ContentSet.location ).\
                                          join(Country,Country.id == Location.country_id).\
-                                         filter(*queries).paginate(page=page_num, per_page=7,error_out=True)
+                                         filter(*queries).paginate(page=page_num, per_page=200,error_out=True)
                     return render_template('show_list.html',y=y)
         
         if request.method =='GET':
