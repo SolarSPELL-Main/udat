@@ -81,16 +81,7 @@
 <!-- Create Table which shows all content sets -->
 
 <div class="container -sm">
-  <nav aria-label="...">
-    <ul class="pagination">
-      {% for page in ContentSet.iter_pages() %}
-      <li class="page-item"> 
-        <a class="page-link" href="{{ url_for('content_set.show_all', page_num=page)}}">{{page}}</a>
-      </li>
-      {% endfor %}
-      
-    </ul>
-  </nav>
+ 
  <table class="table table-striped">
     <thead>
         <tr>
@@ -190,6 +181,16 @@
     </tbody>
 
 </table>
+<nav aria-label="...">
+  <ul class="pagination">
+    {% for page in ContentSet.iter_pages() %}
+    <li class="page-item"> 
+      <a class="page-link" href="{{ url_for('content_set.show_all', page_num=page)}}">{{page}}</a>
+    </li>
+    {% endfor %}
+    
+  </ul>
+</nav>
 
 </div>
 {% endblock content %}

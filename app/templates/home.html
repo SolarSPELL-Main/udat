@@ -43,7 +43,7 @@
   <form action="{{ url_for('content_set.show_all',page_num=1) }}">
   <button class="bg-sunglow btn-lg btn-block mt-4" >Show Contents</button> <br><br>
   </form>
-  <form action="{{ url_for('content.plot',page=1) }}">
+  <form action="{{ url_for('content.show') }}">
   <button class="bg-sunglow  btn-lg btn-block "  >Content Analysis</button><br><br>
   </form>
   {% if current_user.is_admin %}

@@ -1,19 +1,19 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="row">
-    <div class="col wf mt-5 ml-5">
-        <form action="{{ url_for('content.plot', page=1) }}" method="POST">
+    <div class="col-md-5 offset-md-3 text-center mt-5">
+        <form action="{{ url_for('content.plot', page_num=1) }}" method="POST">
             <label for="col" class="text-primary-dark">Please select the data you wish to plot</label>
             <br>
             <select name="col" id="col" class="form-select form-select-lg mb-3">
                <option value="none" name="none">--please select--</option>
-               <option value="language">Language</option>
-               <option value="content_type">Content Type</option>
-               <option value="subject">Subject</option>
-               <option value="parent_folder">Parent Folder</option>
-               <option value="browser">Browser</option>
-               <option value="device_type">Device Type</option>
-               <option value="device_os">Device Operating System</option>
+               <option value="language" {% if col == "language"%} selected {% endif %}>Language</option>
+               <option value="content_type" {% if col == "content_type"%} selected {% endif %}>Content Type</option>
+               <option value="subject" {% if col == "subject"%} selected {% endif %}>Subject</option>
+               <option value="parent_folder" {% if col == "parent_folder"%} selected {% endif %}>Parent Folder</option>
+               <option value="browser" {% if col == "browser"%} selected {% endif %}> Browser</option>
+               <option value="device_type" {% if col == "device_type"%} selected {% endif %}>Device Type</option>
+               <option value="device_os" {% if col == "device_os"%} selected {% endif %}>Device Operating System</option>
 
             </select>
             <br>
@@ -102,19 +102,7 @@
            
     </div>
     
-    <div class="col wf mt-5">
-      {% with messages = get_flashed_messages() %}
-      {% if messages %}
-         <div class="notification is-danger text-maroon text-center mt-5">
-             {{ messages[0] }}
-         </div>
-      {% endif %}
-      {% endwith %}  
-      
-
-      {{ div|safe }}
-      {{ script|safe }}
-
+    
     </div>
     
 </div>
