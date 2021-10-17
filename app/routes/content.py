@@ -125,7 +125,7 @@ def plot():
                     return render_template('plot.html', **kwargs, filters=title, selected_col = selected_col)
                 else:
                     y = db.session.query(Content,ContentSet,Location,Country).join(ContentSet,ContentSet.id == Content.set_id).\
-                                         join(Location,Location.country_id == ContentSet.location ).\
+                                         join(Location,Location.id == ContentSet.location ).\
                                          join(Country,Country.id == Location.country_id).\
                                          filter(*queries).paginate(page=1, per_page=50,error_out=True)
                     return render_template('show_list.html',y=y)
