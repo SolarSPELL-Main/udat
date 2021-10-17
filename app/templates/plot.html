@@ -1,13 +1,20 @@
 {% extends 'base.html' %}
 {% block content %}
-
-<div class="col-md-6 offset-md-3 text-center mt-5">
-          
+<div class="col-md-5 offset-md-3 text-center mt-4">
+    <h5 >{{selected_col}} Usage Data of Content</h5>
+    <h6> Filtered by: {{filters}} </h6>   
+    <br>
 
     {{ div|safe }}
     {{ script|safe }}
+    <br>
+    <form action="{{ url_for('content.show') }}">
+        <button class="bg-sunglow btn-lg btn-block" >Back to Filters </button> 
+    </form> <br>
  
 </div>
+
+
 
 
 

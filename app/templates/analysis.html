@@ -2,7 +2,14 @@
 {% block content %}
 <div class="row">
     <div class="col-md-5 offset-md-3 text-center mt-5">
-        <form action="{{ url_for('content.plot', page_num=1) }}" method="POST">
+      {% with messages = get_flashed_messages() %}
+      {% if messages %}
+         <div class="notification is-danger text-maroon">
+             {{ messages[0] }}
+         </div>
+       {% endif %}
+     {% endwith %}
+        <form action="{{ url_for('content.plot') }}" method="POST">
             <label for="col" class="text-primary-dark">Please select the data you wish to plot</label>
             <br>
             <select name="col" id="col" class="form-select form-select-lg mb-3">
@@ -101,6 +108,7 @@
       </form>
            
     </div>
+    
     
     
     </div>

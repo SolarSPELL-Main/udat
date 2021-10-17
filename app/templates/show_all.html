@@ -182,15 +182,23 @@
 
 </table>
 <nav aria-label="...">
-  <ul class="pagination">
-    {% for page in ContentSet.iter_pages() %}
-    <li class="page-item"> 
-      <a class="page-link" href="{{ url_for('content_set.show_all', page_num=page)}}">{{page}}</a>
-    </li>
-    {% endfor %}
-    
+  <ul class="pagination">  
+    <li {% if ContentSet.has_prev == false %} class="page-item disabled" {%else%} class="page-item" {% endif %} >
+        <a class="page-link" {% if ContentSet.has_prev == true %} href="{{  url_for('content_set.show_all', page_num=ContentSet.prev_num) }}" {%else%} href="#" {% endif %}> << Previous </a>
+    </li>  
+    {% for page in ContentSet.iter_pages(left_edge=3, right_edge=4, left_current=3, right_current=3 ) %}
+    {% if page %}
+      <li class="page-item"> 
+        <a class="page-link" href="{{ url_for('content_set.show_all', page_num=page)}}">{{page}}</a>
+      </li>
+    {% else %}
+      ...
+    {%endif%}
+    {% endfor %}    
+    <li {% if ContentSet.has_next == false %} class="page-item disabled" {%else%} class="page-item" {% endif %} >
+        <a class="page-link" {% if ContentSet.has_next == true %} href="{{url_for('content_set.show_all', page_num=ContentSet.next_num) }}" {%else%} href="#" {% endif %}>Next >> </a>
+    </li>    
   </ul>
 </nav>
-
 </div>
 {% endblock content %}

@@ -303,6 +303,10 @@ body::after {
   background: linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.5)), url("../images/home-banner.jpg");
   background-size: 1300px;
 }
+.disabled {
+  pointer-events:none; 
+  opacity:0.6;         
+}
 
 
 

@@ -18,7 +18,7 @@ from collections import Counter
 from flask_paginate import Pagination, get_page_parameter
 
 
-
+saved_queries = []
 content= Blueprint('content', __name__, url_prefix='/content')
 def get_lists():
     language = db.session.query(Content.language).group_by("language").all()
@@ -76,6 +76,8 @@ def selected():
     if selected_country != "country":
         queries.append(Country.name==selected_country)
         filters_used.append("Country("+selected_country+")") 
+    global saved_queries  
+    saved_queries = queries
     return queries,selected_col, filters_used
 
 @content.route('/analysis', methods=['POST','GET'])
@@ -88,8 +90,8 @@ def show():
                                       device_os = device_os, version=version, location=location,country=country)
 
 
-@content.route('/results/<int:page_num>', methods=['POST','GET'])
-def plot(page_num):
+@content.route('/results/', methods=['POST','GET'])
+def plot():
    if current_user.is_authenticated:
         if request.method == 'POST':
             queries,selected_col, filters_used = selected()
@@ -117,24 +119,26 @@ def plot(page_num):
                     p.xgrid.grid_line_color = None
                     p.y_range.start = 0
                     title = '\n'.join(filters_used)
-                    if title != "":
-                        p.add_layout(Title(text="Filtered by: " + title),'above')
-                    p.add_layout(Title(text=selected_col.capitalize()+ " Usage Data of content "),'above')
+                    
                     script,div = components(p)
                     kwargs = {'script':script, 'div':div}
-                    return render_template('plot.html', **kwargs)
+                    return render_template('plot.html', **kwargs, filters=title, selected_col = selected_col)
                 else:
                     y = db.session.query(Content,ContentSet,Location,Country).join(ContentSet,ContentSet.id == Content.set_id).\
                                          join(Location,Location.country_id == ContentSet.location ).\
                                          join(Country,Country.id == Location.country_id).\
-                                         filter(*queries).paginate(page=page_num, per_page=200,error_out=True)
+                                         filter(*queries).paginate(page=1, per_page=50,error_out=True)
                     return render_template('show_list.html',y=y)
+            return redirect(url_for('content.show'))
         
-        if request.method =='GET':
+   else:
+     return render_template("user_login.html", title='login')
+@content.route('/table/<int:page_num>', methods=['POST','GET'])
+def table(page_num):
+    if request.method =='GET':
+            queries1 = saved_queries
             y = db.session.query(Content,ContentSet,Location,Country).join(ContentSet,ContentSet.id == Content.set_id).\
                                                             join(Location,Location.id == ContentSet.location ).\
                                                             join(Country,Country.id == Location.country_id).\
-                                                            paginate(per_page=7,page=page_num,error_out=True)
+                                                            filter(*queries1).paginate(per_page=50,page=page_num,error_out=True)
             return render_template('show_list.html',y=y)  
-   else:
-     return render_template("user_login.html", title='login')
