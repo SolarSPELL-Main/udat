@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="container -sm mt-5">
-  
+<div class="container -sm mt-5">  
  <table class="table table-striped">     
     <thead>
     <tr>
@@ -37,13 +36,22 @@
     {% endfor %}
     </table>
     <ul class="pagination">
+        <li {% if y.has_prev == false %} class="page-item disabled" {%else%} class="page-item" {% endif %} >
+            <a class="page-link" {% if y.has_prev == true %}  href="{{ url_for('content.table', page_num=y.prev_num) }}" {%else%} href="#" {% endif %}> << Previous </a>
+        </li>
+    
       {% for page in y.iter_pages() %}
         {% if page%}
         <li class="page-item">
-          <a class="page-link" href="{{ url_for('content.plot', page_num=page)}}">{{page}}</a>
+          <a class="page-link" href="{{ url_for('content.table', page_num=page)}}">{{page}}</a>
          </li>
         {% endif %}
       {% endfor %}
+  
+        <li  {% if y.has_next == false %} class="page-item disabled" {%else%} class="page-item" {% endif %}>
+            <a class="page-link" {% if y.has_next == true %}  href="{{ url_for('content.table', page_num=y.next_num) }}" {%else%} href="#" {% endif %}>Next >></a>
+        </li>
+   
      </ul> 
    </div>   
 </div>
