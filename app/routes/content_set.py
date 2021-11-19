@@ -1,5 +1,4 @@
 import datetime
-from re import L
 from flask import Blueprint, render_template,flash, request,url_for,jsonify
 from app.models import Content, ContentSet, Country, Location
 from app import db
@@ -9,11 +8,9 @@ from flask.helpers import url_for
 from werkzeug.utils import redirect
 from flask_login import current_user
 import os
-from flask_paginate import Pagination, get_page_parameter
 
 content_set= Blueprint('content_set', __name__, url_prefix='/')
 # This is where the routes and their defenitions will go 
-# For add_content_set
 #this function is called when country is selected in (edit and add) forms for content sets
 @content_set.route('/select_country', methods=['GET','POST'])
 def select_country():
@@ -57,7 +54,6 @@ def upload():
                                          imported_on=filter_Imported_date,
                                          lib_version=request.form['Library version'],
                                          imported_by=current_user.id)
-
                 db.session.add(content_set)
                 content_set.location = loc_id[0][0]
                 db.session.commit()
@@ -68,6 +64,7 @@ def upload():
                     db.session.bulk_insert_mappings(Content,contentval)
                     db.session.commit()
                 return redirect(url_for('content_set.show_all',page_num=1))
+            #if file is not valid then flasha message
             else:
                 flash('Invalid CSV file,Please check and retry!')
         
@@ -75,7 +72,6 @@ def upload():
     else:
         return render_template("user_login.html",
                                title='SolarSpell')
-
 # Method to decode and set ID for FK
 def prepare_content_object(new_id, content_csv_obj):
     content_list = []
@@ -87,7 +83,6 @@ def prepare_content_object(new_id, content_csv_obj):
         content_obj['set_id'] = new_id
         content_list.append(content_obj)
     return content_list 
-
 
 #handles editing the content set           
 @content_set.route('/edit_content_set/save_content/<int:id>', methods=['GET','POST'])
@@ -113,7 +108,7 @@ def save_edited_content(id):
         return redirect(url_for('content_set.show_all',page_num=1))
     return redirect(url_for('content_set.show_all'))
 
-## For Delete content_set
+#For Delete content_set
 @content_set.route('/content_set/delete/<int:id1>', methods=['GET','POST'])
 def delete(id1):
     if current_user.is_authenticated:

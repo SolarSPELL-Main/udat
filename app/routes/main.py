@@ -3,7 +3,7 @@ from flask.helpers import flash
 from werkzeug.utils import redirect
 from app.models import User
 from flask import Blueprint, render_template, url_for,request
-from flask_login import login_user,current_user
+from flask_login import current_user
 from app import db
 
 
@@ -82,8 +82,7 @@ def delete(id):
             db.session.commit()
             return redirect(url_for('main.manage_users'))
         except Exception as e:
-            print(e)
-  
+            print(e)  
     return redirect(url_for('main.manage_users'))
        
 

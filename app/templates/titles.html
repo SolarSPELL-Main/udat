@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="mt-4"> <h6 class="text-center ml-4">Total number of results is {{total}}</h6>
+</div>
+ <table class="table table-style bg-white mt-4">     
+    <thead>
+    <tr>
+      <th scope="col">Title</th>
+      <th scope="col">Language</th>
+      <th scope="col">Content Type</th>
+      <th scope="col">Subject</th>
+      <th scope="col">Parent Folder</th>
+      <th scope="col">Browser</th>
+      <th scope="col">Device Type</th>
+      <th scope="col">Device Operating System</th>
+      <th scope="col">Version</th>
+      <th scope="col">Country</th>
+      <th scope="col">Location</th>
+    </tr>
+    </thead>
+       <tbody>
+        {% for data in y.items %}
+        
+            <tr>
+             <td>{{data.Content.title}}</td>
+             <td>{{data.Content.language}}</td>
+             <td>{{data.Content.content_type}}</td>
+             <td>{{data.Content.subject}}</td>
+             <td>{{data.Content.parent_folder}}</td>
+             <td>{{data.Content.browser}}</td>
+             <td>{{data.Content.device_type}}</td>
+             <td>{{data.Content.device_os}}</td>
+             <td>{{data.ContentSet.lib_version}}</td>
+             <td>{{data.Country.name}}</td>
+             <td>{{data.Location.name}}</td>
+            </tr>
+          </tbody>
+       {% endfor %}
+    </table>
+    <ul class="pagination">
+        <li {% if y.has_prev == false %} class="page-item disabled" {%else%} class="page-item" {% endif %} >
+            <a class="page-link" {% if y.has_prev == true %}  href="{{ url_for('content.table', page_num=y.prev_num, X=x) }}" {%else%} href="#" {% endif %}> << Previous </a>
+        </li>
+    
+      {% for page in y.iter_pages() %}
+        {% if page%}
+        <li class="page-item">
+          <a class="page-link" href="{{ url_for('content.table', page_num=page, X=x)}}">{{page}}</a>
+         </li>
+        {% endif %}
+      {% endfor %}
+  
+        <li  {% if y.has_next == false %} class="page-item disabled" {%else%} class="page-item" {% endif %}>
+            <a class="page-link" {% if y.has_next == true %}  href="{{ url_for('content.table', page_num=y.next_num, X=x) }}" {%else%} href="#" {% endif %}>Next >></a>
+        </li>
+   
+     </ul> 
+
+    
+{% endblock %}

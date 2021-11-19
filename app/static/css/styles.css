@@ -11,13 +11,13 @@
   background-color: #0676D8;
 }
 .bg-primary-light{
-  background-color:#00A3E0;
+  background-color:#00A3E0 !important;
 }
 .bg-primary-light-10{
-  background-color: rgba(0, 163, 224, 0.1);
+  background-color: rgba(0, 163, 224, 0.1) !important;
 }
 .bg-sunglow{
-  background-color:#FFC627;
+  background-color:#FFC627 !important;
 }
 .bg-sunglow-10{
   background-color:rgba(255, 198, 39, 0.1);
@@ -35,7 +35,10 @@
   background-color: #78BE20;
 }
 .bg-grey{
-  background-color: #5C6670;
+  background-color: #5C6670 !important;
+}
+.bg-light-grey{
+  background-color: #d3d3d3 !important;
 }
 .bg-white{
   background-color: #FFFFFF;
@@ -136,7 +139,7 @@
 
 /* ASU Brand colors borders */
 .border-primary-dark{
-  border-color: #0676D8;
+  border-color: #0676D8 !important;
 }
 .border-primary-light{
   border-color:#00A3E0;
@@ -168,7 +171,7 @@
   color: #0676D8;
 }
 .text-primary-light{
-  color:#00A3E0;
+  color:#00A3E0 !important;
 }
 .text-sunglow{
   color:#FFC627;
@@ -275,6 +278,9 @@
 .opacity-2{
   opacity: 0.4;
 }
+.opacity-1{
+ opacity: 1 !important;
+}
 body {
   position: relative;
   min-height:100vh; 
@@ -307,6 +313,38 @@ body::after {
   pointer-events:none; 
   opacity:0.6;         
 }
+#wave {
+  position: relative;
+  height: 70px;
+  width: 600px;
+  background: #e0efe3;
+}
+#wave:before {
+  content: "";
+  display: block;
+  position: absolute;
+  border-radius: 100% 50%;
+  width: 340px;
+  height: 80px;
+  background-color: white;
+  right: -5px;
+  top: 40px;
+}
+#wave:after {
+  content: "";
+  display: block;
+  position: absolute;
+  border-radius: 100% 50%;
+  width: 300px;
+  height: 70px;
+  background-color: #e0efe3;
+  left: 0;
+  top: 27px;
+} 
+.no-margin{
+  margin-bottom: 0 !important;
+}
+
 
 
 

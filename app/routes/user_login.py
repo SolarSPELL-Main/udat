@@ -3,12 +3,9 @@ from flask import Blueprint, render_template, url_for,request,flash,redirect
 import app.models 
 from app import db
 from flask_login import login_user,current_user,logout_user
-from app.models import User
-
 
 #Make the login page the first page the user sees when they go to UDAT website
 user_login = Blueprint('user_login', __name__, url_prefix='/')
-
 
 #Return login page if user is not logged in, and if user is logged in it will return home
 @user_login.route('/')
@@ -17,7 +14,6 @@ def login_user_page():
         return render_template('home.html')
     else:
         return render_template('user_login.html', title = 'login')
-
 
 #Handle the login authentication
 @user_login.route('/', methods=['POST','GET'])
@@ -35,8 +31,6 @@ def login():
         else:
             flash('You have entered wrong email or password')
         return render_template('user_login.html', title ='login')
-
-
 #Handle user logout 
 @user_login.route('/logout', methods=['POST','GET'])
 def logout():

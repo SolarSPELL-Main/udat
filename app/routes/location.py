@@ -1,4 +1,3 @@
-from os import name
 from flask import Blueprint, render_template,request,flash,redirect,url_for
 from flask_login import current_user
 import app.models 
@@ -71,6 +70,5 @@ def delete(id):
             db.session.commit()
             return redirect(url_for('location.manage_locations'))
         except Exception as e:
-            print(e)
-  
+            print(e)  
     return redirect(url_for('location.manage_locations'))
