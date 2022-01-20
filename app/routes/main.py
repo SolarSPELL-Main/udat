@@ -23,7 +23,8 @@ def manage_users():
     if current_user.is_authenticated:
         return render_template('manage_users.html',
                                 User = app.models.User.query.all(),
-                                title='User Managment')
+                                title='User Managment',
+                                currentUser = current_user.fullname)
 
 # Handle adding user to database(only admins) 
 @main.route('/manage_users/add_user',methods=['GET','POST'])

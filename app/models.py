@@ -57,12 +57,23 @@ class Content(db.Model):
         self.browser = browser
         self.device_type = device_type
         self.device_os = device_os
+#the class refrences the region table in the database
+class Region(db.Model):
+    __tablename__ = 'region'
+    id = db.Column(db.Integer, primary_key = True)
+    name = db.Column(db.String(100))
+    location = db.relationship("Country", cascade="all, delete")
+
+    def __init__(self,name):
+        self.name = name
+
 
 # the class references the Country table in the database
 class Country(db.Model):
     __tablename__ = 'country'
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(100))
+    region_id = db.Column(db.Integer, db.ForeignKey('region.id'))
     location = db.relationship("Location", cascade="all, delete")
 
     def __init__(self,name):
@@ -73,11 +84,13 @@ class Location(db.Model):
     __tablename__ = 'location'
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(100))
+    type = db.Column(db.String(100))
     country_id = db.Column(db.Integer, db.ForeignKey('country.id'))
     contentset = db.relationship("ContentSet", cascade="all, delete")
 
-    def __init__(self,name):
+    def __init__(self,name,type):
         self.name = name
+        self.type = type
   
 
     

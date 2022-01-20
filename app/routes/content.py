@@ -150,7 +150,7 @@ def plot():
                                          filter(*queries).group_by(selected_col).all()
                     
                     all_conetnts = db.session.query(Content).all() 
-                    print(all_conetnts)
+                  
                     global rows
                     r=rows
                     clicked=''

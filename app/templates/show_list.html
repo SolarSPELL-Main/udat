@@ -27,7 +27,7 @@
             {% if selected_col == 'language'%}               
               <button type="button" class="btn" name="titles" data-toggle="collapse" data-target="#{{data.Content.language}}" class="accordion-toggle">{{data.Content.language}}</button>
             
-              <tbody class="accordian-body collapse" name="{{data.Content.language}}" id="{{data.Content.language}}">
+              <tbody class="table table-bordered accordian-body collapse" name="{{data.Content.language}}" id="{{data.Content.language}}">
             {% for r in all_conetnts%}    
               {% if r.language == data.Content.language%}                  
                 <tr>   
@@ -48,7 +48,7 @@
           <td id="content_type" {% if selected_col == 'content_type'%} class="bg-sunglow" {% endif %}>
             {% if selected_col == 'content_type'%}
             <button type="button" class="btn" name="titles"  data-toggle="collapse" data-target="#{{data.Content.content_type}}" class="accordion-toggle" data-arg='{{loop.index}}'>{{data.Content.content_type}}</button>
-            <tbody class="accordian-body collapse" name="{{data.Content.content_type}}" id="{{data.Content.content_type}}">
+            <tbody class="table table-bordered accordian-body collapse" name="{{data.Content.content_type}}" id="{{data.Content.content_type}}">
               {% for r in all_conetnts%}    
               {% if r.content_type == data.Content.content_type%}                  
                 <tr>   
@@ -66,8 +66,48 @@
             </tbody>
           {%endif%}
           </td>
-             <td id="subject" {% if selected_col == 'subject'%} class="bg-sunglow" {% endif %}>{% if selected_col == 'subject'%}{{data.Content.subject}}{%endif%}</td>
-             <td id="parent_folder" {% if selected_col == 'parent_folder'%} class="bg-sunglow" {% endif %}>{% if selected_col == 'parent_folder'%}{{data.Content.parent_folder}}{%endif%}</td>
+          <td id="subject" {% if selected_col == 'subject'%} class="bg-sunglow" {% endif %}>
+              {% if selected_col == 'subject'%}               
+                <button type="button" class="btn" name="titles" data-toggle="collapse" data-target="#{{data.Content.subject}}" class="accordion-toggle">{{data.Content.subject}}</button>
+                <tbody class="table table-bordered accordian-body collapse" name="{{data.Content.subject}}" id="{{data.Content.subject}}">
+                {% for r in all_conetnts%}    
+                  {% if r.subject == data.Content.subject%}                  
+                    <tr>   
+                      <td class="col-6"> {{data.Content.title}}</td>                     
+                      <td>{{data.Content.language}}</td>
+                      <td>{{data.Content.content_type}}</td>  
+                      <td>{{data.Content.subject}}</td>   
+                      <td>{{data.Content.parent_folder}}</td> 
+                      <td>{{data.Content.browser}}</td>
+                      <td>{{data.Content.device_type}}</td>   
+                      <td>{{data.Content.device_os}}</td>                                         
+                    </tr>  
+                  {%endif%}             
+                {%endfor%}
+                </tbody>   
+              {%endif%}  
+            </td>
+             <td id="parent_folder" {% if selected_col == 'parent_folder'%} class="bg-sunglow" {% endif %}>
+               {% if selected_col == 'parent_folder'%}
+               <button type="button" class="btn" name="titles"  data-toggle="collapse" data-target="#{{data.Content.parent_folder}}" class="accordion-toggle" data-arg='{{loop.index}}'>{{data.Content.parent_folder}}</button>
+               <tbody class="table table-bordered accordian-body collapse" name="{{data.Content.parent_folder}}" id="{{data.Content.parent_folder}}">
+                {% for r in all_conetnts%}    
+                {% if r.parent_folder == data.Content.parent_folder%}                  
+                  <tr>   
+                    <td> {{data.Content.title}}</td>                     
+                    <td>{{data.Content.language}}</td>
+                    <td>{{data.Content.content_type}}</td>  
+                    <td>{{data.Content.subject}}</td>   
+                    <td>{{data.Content.parent_folder}}</td> 
+                    <td>{{data.Content.browser}}</td>
+                    <td>{{data.Content.device_type}}</td>   
+                    <td>{{data.Content.device_os}}</td>                                         
+                  </tr>  
+                {%endif%}             
+                {%endfor%}
+                </tbody>
+                {%endif%}               
+             </td>
              <td id="browser" {% if selected_col == 'browser'%} class="bg-sunglow" {% endif %}>{% if selected_col == 'browser'%}{{data.Content.browser}}{%endif%}</td>
              <td id="device_type" {% if selected_col == 'device_type'%} class="bg-sunglow" {% endif %}>{% if selected_col == 'device_type'%}{{data.Content.device_type}}{%endif%}</td>
              <td id="device_os" {% if selected_col == 'device_os'%} class="bg-sunglow" {% endif %}> {% if selected_col == 'device_os'%}{{data.Content.device_os}}{%endif%}</td>

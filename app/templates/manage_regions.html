@@ -4,7 +4,7 @@
 <!--button for add country-->
 <div class="text-center">
       
-    <button type="button" class = "text-white btn-lg mt-4 mb-3 bg-primary-light" data-toggle="modal" data-target="#exampleModalCenter1"> Add Country</button>
+    <button type="button" class = "text-white btn-lg mt-4 mb-3 bg-primary-light" data-toggle="modal" data-target="#exampleModalCenter1"> Add Region</button>
     {% with messages = get_flashed_messages() %}
     {% if messages %}
        <div class="notification is-danger text-maroon">
@@ -18,33 +18,21 @@
 <div class="modal-dialog modal-dialog-centered" role="document">
   <div class="modal-content">
     <div class="modal-header">
-      <h5 class="modal-title" id="exampleModalLongTitle">Add Country Form</h5>
+      <h5 class="modal-title" id="exampleModalLongTitle">Add Region Form</h5>
       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
     <div class="modal-body">
-       <form  action="{{ url_for('countries.add_country') }}" method="POST">
-           <label for="cn">Country Name</label>
-           <br>
-           <input type="Enter username" name="cn" required="1">
-           <br>
-           <br>
-           <label for="cn">Region Name</label>
-           <select name="reg" id="reg"  class="form-select form-select-sm ">
-            {% for value in reg %}
-              <option value="{{value[0]}}" >{{value[0]}}</option>
-            {% endfor %}
-           </select>
+       <form  action="{{ url_for('region.add_region') }}" method="POST">
+           <label for="rn">Region Name</label>
+           <input type="Enter username" name="rn" required="1">
            <br>           
-           <button type="save" class="btn btn-primary">Add Country</button>
-   
+           <button type="save" class="btn btn-primary">Add Region</button>   
        </form>
     </div>
-    <div class="modal-footer">
-     
-      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-     
+    <div class="modal-footer">     
+      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>     
     </div>
   </div>
 </div>
@@ -56,47 +44,37 @@
     <table class="table table-striped">
      <thead>
          <tr>
-             <th scope="col">Country</th>
+             
              <th scope="col">Region</th>
-
              <th></th>
              <th></th>
          </tr>
      </thead>
      <tbody>
-         {% for country in country %}
+         {% for reg in region %}
          <tr>
-             <td>{{country.Country.name}}</td>
-             <td>{{country.Region.name}}</td>
+
+             <td>{{reg.name}}</td>
              
              <!--Edit button-->
-             <td><button type="submit" class="btn-sm btn-block bg-primary-light text-white" data-toggle="modal" data-target="#{{country.Country.id}}" data_id="{{country.Country.id}}"> Edit</button></td>
+             <td><button type="submit" class="btn-sm btn-block bg-primary-light text-white" data-toggle="modal" data-target="#{{reg.id}}" data_id="{{reg.id}}"> Edit</button></td>
              <!--edit form-->
-             <div class="modal fade" id="{{country.Country.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+             <div class="modal fade" id="{{reg.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                  <div class="modal-content">
                     <div class="modal-header">
-                      <h5 class="modal-title" id="exampleModalLongTitle">Edit Country Form</h5>
+                      <h5 class="modal-title" id="exampleModalLongTitle">Edit Region Form</h5>
                       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                       </button>
                     </div>
                     <div class="modal-body">
-                       <form action="{{ url_for('countries.edit_country', id = country.Country.id)}}" method="POST" enctype="multipart/form-data">
-                           <label for="cn">Country Name</label> 
-                           <br>                                  
-                           <input type="text" name="cn" value="{{country.Country.name}}">
+                       <form action="{{ url_for('region.edit_region', id = reg.id)}}" method="POST" enctype="multipart/form-data">
+                           <label for="cn">Region Name</label>                                   
+                           <input type="text" name="rn" value="{{reg.name}}">
                            <br>
-                           <br>
-                           Region
-                          <select name="Region" id="Region"  class="form-select form-select-sm ">
-                            <option value="{{country.Region.name}}">{{country.Region.name}}</option>
-                            {% for value in reg %}
-                              <option value="{{value[0]}}">{{value[0]}}</option>
-                            {% endfor %}
-                          </select>
-                          <br>                           
-                          <button type="save" class="btn btn-primary">Edit</button>                                                                 
+                           
+                           <button type="save" class="btn btn-primary">Edit</button>                                                                 
                        </form>
                     </div>
                     <div class="modal-footer">              
@@ -109,39 +87,40 @@
               </div>
               <!--delete button-->
                <td>
-                 <button class=" btn-danger"  data-toggle="modal" data-target="#ModalCenter{{country.Country.id}}">Delete</button>
+                 <button class=" btn-danger"  data-toggle="modal" data-target="#modal{{reg.id}}">Delete</button>
                 <!-- Modal -->
-                  <div class="modal fade" id="ModalCenter{{country.Country.id}}">
+                  <div class="modal fade" id="modal{{reg.id}}">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                       <div class="modal-content">
                         <div class="modal-header">
-                          <h5 class="modal-title" id="exampleModalLongTitle{{country.Country.id}}">Deleting Record Permanently</h5>
+                          <h5 class="modal-title" id="exampleModalLongTitle{{reg.id}}">Deleting Record Permanently</h5>
                           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                          </button>
                         </div>
+                        
                         {% set count = namespace(value=0)%}
                         {% set count2 = namespace(value=0)%}
-                        {% for loc in location %}
-                            {% if loc.country_id == country.Country.id%}
+                        {% for c in country %}
+                            {% if c.region_id==reg.id%}
                                 {% set count.value = count.value + 1  %}
-                                {%for c in con%}
-                                   {% if c[0] == loc.id%}
+                                {%for content in con%}
+                                  {% if content[1].country_id == c.id%}
                                       {% set count2.value = count2.value + 1  %}
-                                   {% endif %}
+                                  {% endif %}
                                 {% endfor %}                                   
                             {% endif %}
                         {%endfor%}
                         <div class="modal-body">
                           {% if count.value != 0 %}
-                            <h5 class="text-danger font-weight-bold">Deleteing {{country.Country.name}} will delete {{count.value}} location(s) and {{count2.value}} content set(s)</h3>
+                            <h5 class="text-danger font-weight-bold">Deleteing {{reg.name}} will delete {{count.value}} country(s) and {{count2.value}} content set(s)</h3>
                           {% endif %}
-                           <p>Are you sure you want to delete {{country.Country.name}} ?</p>
+                           <p>Are you sure you want to delete {{reg.name}} ?</p>
                          </div>
                          <div class="modal-footer">
                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
          
-                           <form action="{{url_for('countries.delete', id=country.Country.id)}}" method="post">
+                           <form action="{{url_for('region.delete', id=reg.id)}}" method="post">
                              <input type="submit" value="Delete" class="btn btn-danger">
                            </form>
                          </div>

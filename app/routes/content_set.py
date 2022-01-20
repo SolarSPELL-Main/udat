@@ -1,5 +1,6 @@
 import datetime
-from flask import Blueprint, render_template,flash, request,url_for,jsonify
+from flask import Blueprint, render_template,flash, request, sessions,url_for,jsonify
+from sqlalchemy.sql.expression import exists, false
 from app.models import Content, ContentSet, Country, Location
 from app import db
 import csv
@@ -8,6 +9,7 @@ from flask.helpers import url_for
 from werkzeug.utils import redirect
 from flask_login import current_user
 import os
+from sqlalchemy import func
 
 content_set= Blueprint('content_set', __name__, url_prefix='/')
 # This is where the routes and their defenitions will go 
@@ -27,11 +29,13 @@ def upload():
     if current_user.is_authenticated:
         if request.method == 'POST':
             i=0
-            content_sets= []               
+            uploaded_files=[]
+            content_sets= []  
             is_file_valid=None
             #Uploading multiple CSV
             for file in request.files.getlist("csvfiles"):
                 csv_files = TextIOWrapper(file, encoding='utf-8-sig')
+                uploaded_files.append(csv_files)
                 temp = csv_files.read()
                 content_sets.append(temp)
                 #checking valid CSV File
@@ -39,7 +43,8 @@ def upload():
                 file_size=get_file_size(file)
                 if(file_size!=0):
                     is_file_valid=True
-                is_file_valid = isRowLenValid         
+                is_file_valid = isRowLenValid  
+           # is_file_valid = check_duplicate(csv.DictReader(content_sets[i].splitlines(), skipinitialspace=True))    
             if(is_file_valid):   
                 Exported_date = str(request.form['Exported on'])
                 year, month, day = map(int, Exported_date.split('-'))
@@ -61,13 +66,25 @@ def upload():
                 newid=content_set.id
                 for i in range(len(content_sets)):
                     contentval = prepare_content_object(newid,csv.DictReader(content_sets[i].splitlines(), skipinitialspace=True))
-                    db.session.bulk_insert_mappings(Content,contentval)
-                    db.session.commit()
-                return redirect(url_for('content_set.show_all',page_num=1))
+                    valid = check_duplicate(contentval)
+                    if valid == True:
+                        db.session.bulk_insert_mappings(Content,contentval)
+                        db.session.commit()
+                        return redirect(url_for('content_set.show_all',page_num=1))
+                    else:
+                        db.session.delete(content_set)
+                        db.session.flush()
+                        db.session.commit()
+
+                        flash('CSV file already exists')
+                        return redirect(url_for('content_set.show_all',page_num=1))
+                    
+
             #if file is not valid then flasha message
             else:
                 flash('Invalid CSV file,Please check and retry!')
         
+
             return redirect(url_for('content_set.show_all',page_num=1))
     else:
         return render_template("user_login.html",
@@ -83,7 +100,20 @@ def prepare_content_object(new_id, content_csv_obj):
         content_obj['set_id'] = new_id
         content_list.append(content_obj)
     return content_list 
-
+def check_duplicate(temp):
+    valid=True
+    content_set_total = db.session.query(func.count(ContentSet.id)).scalar()
+    for i in range(content_set_total):
+        for val in temp:               
+            if not (db.session.query(exists().where(Content.title==val["title"] and Content.language==val["language"] and Content.content_type==val["content_type"] and Content.subject==val["subject"] and Content.parent_folder==val["parent_folder"] and Content.browser==val["browser"] and Content.device_type ==val["device_type"] and Content.device_os ==val["device_os"] and Content.set_id == i)).scalar()):
+             valid=True
+             break
+            else:
+             valid=False
+    return valid
+    
+    
+        
 #handles editing the content set           
 @content_set.route('/edit_content_set/save_content/<int:id>', methods=['GET','POST'])
 def save_edited_content(id):

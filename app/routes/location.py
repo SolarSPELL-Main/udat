@@ -21,11 +21,12 @@ def add_location():
     if request.method == 'POST':
         name = request.form['ln'] 
         country = request.form.get('coun')
+        loc_type = request.form.get('loc-type')
         country_id = db.session.query(Country.id).filter_by(name=country).all()
         #Check if location exists in database        
         if db.session.query(Location).filter_by(name = name).first() is None:
             try:
-                location= app.models.Location(name=name)
+                location= app.models.Location(name=name,type=loc_type)
                 db.session.add(location)
                 location.country_id = country_id[0][0]
                 db.session.commit()

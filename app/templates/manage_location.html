@@ -28,10 +28,19 @@
                 <label for="cn1">Location Name</label>
                 <input type="Enter username" name="ln" required="1">
                 <br>
+                <label for="cn1">Country</label>
                 <select name="coun" id="coun"  class="form-select form-select-sm ">
                   {% for value in countries %}
                   <option value="{{value[0]}}" >{{value[0]}}</option>
                  {% endfor %}
+                 </select>
+                 <br>
+                 <label for="cn1">Region </label>
+                 <select name="loc-type" id="loc-type"  class="form-select form-select-sm ">                  
+                  <option value="Public Library">Public Library</option>
+                  <option value="High School" >High School</option> 
+                  <option value="Education Center" >Education Center</option>
+                  <option value="Hospital" >Hospital</option>                  
                  </select>
                  <br>
 
@@ -60,9 +69,10 @@
     <table class="table table-striped">
      <thead>
          <tr>
-             <th scope="col">ID </th>
+             
              <th scope="col">Location</th>
              <th scope="col">Country</th>
+             <th scope="col">Type</th>
 
              <th></th>
              <th></th>
@@ -71,9 +81,10 @@
      <tbody>
          {% for location in locations %}
          <tr>
-             <th scope="row">{{location.Location.id}}</th>
+             
              <td>{{location.Location.name}}</td>
              <td>{{location.Country.name}}</td>
+             <td>{{location.Location.type}}</td>
 
           
          <!--Edit button-->
@@ -101,6 +112,15 @@
                        {% endfor %}
                        </select>
                        <br>
+                       
+                       <label for="cn1">Region</label>
+                        <select name="loc-type" id="loc-type"  class="form-select form-select-sm ">                  
+                          <option value="Public Library">Public Library</option>
+                          <option value="High School" >High School</option> 
+                          <option value="Education Center" >Education Center</option>
+                          <option value="Hospital" >Hospital</option>                  
+                        </select>
+                        <br>
                      
                        
                        <button type="save" class="btn btn-primary">Edit</button>                                                                 
