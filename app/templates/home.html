@@ -2,6 +2,8 @@
 <html>
   <head>
     <link rel="stylesheet" href="../static/css/styles.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     
@@ -19,7 +21,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bokeh/1.2.0/bokeh-tables.css" rel="stylesheet" type="text/css">
 
   </head>
-  <body class="bg">
+  <body>
 
     <!--Navigation bar-->
     <nav class="navbar navbar-expand-xl navbar-dark bg-primary-light">
@@ -37,21 +39,26 @@
 
 
 <!--buttons for show content & content analysis-->
+<div class="row">
+  <h4 class="mt-4 text-center">Welcome {{ current_user.fullname}}</h4>
+<div class="col ml-5">
+  {{ div|safe }}
+  {{ script|safe }}
+</div>
 
-<div class="col-md-6 offset-md-3 text-center">
-  <h3 class="mt-4">Welcome {{ current_user.fullname}}</h3>
+<div class="col ml-4">
   <form action="{{ url_for('content_set.show_all',page_num=1) }}">
-  <button class="bg-sunglow btn-lg btn-block mt-4" >Show Contents</button> <br><br>
+  <button class="bg-sunglow btn-lg mt-4" >Show Contents &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fas fa-file-alt"></i></button> <br><br>
   </form>
   <form action="{{ url_for('content.show') }}">
-  <button class="bg-sunglow  btn-lg btn-block "  >Content Analysis</button><br><br>
+  <button class="bg-sunglow  btn-lg "  >Content Analysis &nbsp;<i class="fas fa-chart-bar"></i></button><br><br>
   </form>
   {% if current_user.is_admin %}
     <form action="{{ url_for('user_login.admin_tool') }}">
-       <button class="bg-sunglow  btn-lg btn-block">Admin Tool</button><br><br>
+       <button class="bg-sunglow  btn-lg">Admin Tool &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;<i class="fas fa-address-book"></i>   </button><br><br>
     </form>
   {% endif %}
-
+</div>
 </div>
 
    

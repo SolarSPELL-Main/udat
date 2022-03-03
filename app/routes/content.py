@@ -109,8 +109,7 @@ def plot():
             global selected_c
             selected_c = selected_col
             global saved_queries
-            saved_queries = queries
-            
+            saved_queries = queries            
             output_file("plot.html") # plot output file       
             if request.form['submit_button'] == 'plot':
                     if selected_col == "none":
@@ -148,19 +147,13 @@ def plot():
                                          join(Location,Location.id == ContentSet.location ).\
                                          join(Country,Country.id == Location.country_id).\
                                          filter(*queries).group_by(selected_col).all()
-                    
-                    all_conetnts = db.session.query(Content).all() 
-                  
-                    global rows
-                    r=rows
-                    clicked=''
                     if y == []:
                           flash('No data available with the selected filters')
                           return redirect(url_for('content.show'))
                     else:
                         global filtered_rows
                         filtered_rows = y
-                        return render_template('show_list.html',y=y,x=1,selected_col =selected_col,all_conetnts = all_conetnts,clicked=clicked)
+                        return render_template('show_list.html',y=y,x=1,selected_col =selected_col)
                 else:
                     y = db.session.query(Content,ContentSet,Location,Country).join(ContentSet,ContentSet.id == Content.set_id).\
                                                             join(Location,Location.id == ContentSet.location ).\
@@ -175,7 +168,6 @@ def plot():
                                                             join(Country,Country.id == Location.country_id).\
                                                             filter(*queries).count()
                         return render_template('titles.html',y=y,x=1,total=total)
-
             else:
                 title = request.form.get('search')
                 global Title 
@@ -190,33 +182,30 @@ def plot():
                                                             filter(Content.title.like('%' + title + '%')).count()
                 return render_template('titles.html', y=found_items,x=2,total=total)  # the x variable is set to distinguish between search button and show list button in analysis.html page
         else:
-
             y = db.session.query(Content,ContentSet,Location,Country,func.count(selected_c).label('number')).join(ContentSet,ContentSet.id == Content.set_id).\
                                          join(Location,Location.id == ContentSet.location ).\
                                          join(Country,Country.id == Location.country_id).\
-                                         filter(*q).group_by(selected_c).all()
-            
-            
+                                         filter(*q).group_by(selected_c).all()            
             r=rows
             return render_template('show_list.html',y=y,x=1,rows=r)        
    else:
      return render_template("user_login.html", title='login')
 #this rout handles pagination in show_list table    
-@content.route('/table/<int:page_num><int:X>', methods=['POST','GET'])
-def table(page_num,X):
+@content.route('/table/<int:page_num><int:X><string:selected_row>', methods=['POST','GET'])
+def table(page_num,X,selected_row):
     if request.method =='GET':
         if X == 1: # this means user has clicked  show list button and the data in table is based on selected filters
             queries1 = saved_queries
             y = db.session.query(Content,ContentSet,Location,Country).join(ContentSet,ContentSet.id == Content.set_id).\
                                                             join(Location,Location.id == ContentSet.location ).\
                                                             join(Country,Country.id == Location.country_id).\
-                                                            filter(*queries1).paginate(per_page=50,page=page_num,error_out=True)
+                                                            filter(getattr(Content, selected_c)==selected_row,*queries1).paginate(per_page=20,page=page_num,error_out=True)
             
             total = db.session.query(Content,ContentSet,Location,Country).join(ContentSet,ContentSet.id == Content.set_id).\
                                                             join(Location,Location.id == ContentSet.location ).\
                                                             join(Country,Country.id == Location.country_id).\
-                                                            filter(*queries1).count()
-            return render_template('titles.html',y=y,x=1,total=total) # the x variable is set to distinguish between search button and show list button in analysis.html page
+                                                            filter(getattr(Content, selected_c)==selected_row,*queries1).count()
+            return render_template('titles.html',y=y,x=1,total=total,selected_row = selected_row)  # the x variable is set to distinguish between search button and show list button in analysis.html page
         else: # it means the user has clicked on search button and the data displayed in table is related to search value in search input box
             queries1 = Title
             y = db.session.query(Content,ContentSet,Location,Country).join(ContentSet,ContentSet.id == Content.set_id).\
@@ -228,4 +217,16 @@ def table(page_num,X):
                                                             join(Country,Country.id == Location.country_id).\
                                                             filter(Content.title.like('%' + queries1 + '%')).count()
             return render_template('titles.html', y=y,x=2, total=total)  # the x variable is set to distinguish between search button and show list button in analysis.html page
+
+@content.route('/table/<string:selected_row>', methods=['POST','GET'])
+def selected_row(selected_row):
+    y = db.session.query(Content,ContentSet,Location,Country).join(ContentSet,ContentSet.id == Content.set_id).\
+                                                            join(Location,Location.id == ContentSet.location ).\
+                                                            join(Country,Country.id == Location.country_id).\
+                                                           filter(getattr(Content, selected_c)==selected_row,*saved_queries).paginate(per_page=20,page=1,error_out=True)
+    total = db.session.query(Content,ContentSet,Location,Country).join(ContentSet,ContentSet.id == Content.set_id).\
+                                                            join(Location,Location.id == ContentSet.location ).\
+                                                            join(Country,Country.id == Location.country_id).\
+                                                            filter(getattr(Content, selected_c)==selected_row, *saved_queries).count()
+    return render_template('titles.html',y=y,x=1,total=total, selected_row=selected_row)
 

@@ -1,10 +1,19 @@
+from collections import Counter
+from unicodedata import name
+import pandas as pd
 import app
 from flask.helpers import flash
 from werkzeug.utils import redirect
-from app.models import User
+from app.models import Country, Location, User
 from flask import Blueprint, render_template, url_for,request
 from flask_login import current_user
 from app import db
+from bokeh.io import output_file
+from bokeh.models import ColumnDataSource
+from bokeh.palettes import Spectral6
+from bokeh.plotting import figure
+from bokeh.embed import components
+
 
 
 main= Blueprint('main', __name__, url_prefix='/')
@@ -13,8 +22,28 @@ main= Blueprint('main', __name__, url_prefix='/')
 @main.route('/home/', methods=['GET', 'POST'])
 def show():
     if current_user.is_authenticated:
-       return render_template("home.html", title='home')
+       # output_file("colormapped_bars.html")
+
+        countries = db.session.query(Country.name).join(Location,Location.country_id==Country.id).all()
+        x_df = pd.DataFrame(countries)
+        x_list = x_df[0].values.tolist()
+        x_counter = Counter(x_list)
+        x_list = list(x_counter)
+        counter_vals = x_counter.values()
+        vals_list = list(counter_vals)
+        p = figure(x_range = x_list, plot_height=300, plot_width=500,
+                                   toolbar_location="right", 
+                                   tools="")
+        p.vbar(x = x_list, top=vals_list, width=0.9, color=Spectral6)
+        p.xgrid.grid_line_color = None
+        p.yaxis.axis_label = 'Number of Locations'
+        p.y_range.start = 0
+        script,div = components(p)       
+        kwargs = {'script':script, 'div':div}
+        return render_template("home.html", title='home',**kwargs)
+      
     else:
+      
        return render_template("user_login.html", title='login')
 
 #Handle manage users button, which returns manage_users html page(only admins) 

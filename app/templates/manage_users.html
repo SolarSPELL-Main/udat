@@ -4,7 +4,7 @@
 <!--button for add users-->
 <div class="text-center">
       
-        <button type="button" class = "text-white btn-lg mt-4 mb-3 bg-primary-light" data-toggle="modal" data-target="#exampleModalCenter1"> Add User</button>
+        <button type="button" class = "text-white btn-lg mt-4 mb-3 bg-primary-light" data-toggle="modal" data-target="#add"> Add User</button>
         {% with messages = get_flashed_messages() %}
         {% if messages %}
            <div class="notification is-danger text-maroon">
@@ -14,7 +14,7 @@
        {% endwith %}    
 </div>
 <!--modal linked to add user button-->
-<div class="modal fade" id="exampleModalCenter1" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter1Title" aria-hidden="true">
+<div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="addTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -26,13 +26,13 @@
         <div class="modal-body">
            <form  action="{{ url_for('main.add_user') }}" method="POST">
                <label for="fn">Full Name</label>
-               <input type="Enter username" name="fn" required="1">
+               <input type="text" name="fn" required="1">
                <br>
                <label for="un">Username</label>
-               <input type="Enter Username" name="un" required="1">
+               <input type="text" name="un" placeholder="Username" required/>
                <br>
                <label for="pw">Password</label>
-               <input type="password" name="pw" required="1"> 
+               <input type="password" name="pw" required/> 
                <br>
                
                <input class="form-check-input ml-4" type="checkbox"  id="admin" name="admin">

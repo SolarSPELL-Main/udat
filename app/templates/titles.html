@@ -2,8 +2,12 @@
 {% block content %}
 <div class="mt-4"> <h6 class="text-center ml-4">Total number of results is {{total}}</h6>
 </div>
- <table class="table table-style bg-white mt-4">     
-    <thead>
+<div class="row">
+  <div class="col-sm-1"></div>
+  <div class="col-sm-10">
+  
+ <table class="table table-sm">     
+    <thead class="thead-light">
     <tr>
       <th scope="col">Title</th>
       <th scope="col">Language</th>
@@ -39,22 +43,24 @@
     </table>
     <ul class="pagination">
         <li {% if y.has_prev == false %} class="page-item disabled" {%else%} class="page-item" {% endif %} >
-            <a class="page-link" {% if y.has_prev == true %}  href="{{ url_for('content.table', page_num=y.prev_num, X=x) }}" {%else%} href="#" {% endif %}> << Previous </a>
+            <a class="page-link" {% if y.has_prev == true %}  href="{{ url_for('content.table', page_num=y.prev_num, X=x,selected_row=selected_row) }}" {%else%} href="#" {% endif %}> << Previous </a>
         </li>
     
       {% for page in y.iter_pages() %}
         {% if page%}
         <li class="page-item">
-          <a class="page-link" href="{{ url_for('content.table', page_num=page, X=x)}}">{{page}}</a>
+          <a class="page-link" href="{{ url_for('content.table', page_num=page, X=x,selected_row=selected_row)}}">{{page}}</a>
          </li>
         {% endif %}
       {% endfor %}
   
         <li  {% if y.has_next == false %} class="page-item disabled" {%else%} class="page-item" {% endif %}>
-            <a class="page-link" {% if y.has_next == true %}  href="{{ url_for('content.table', page_num=y.next_num, X=x) }}" {%else%} href="#" {% endif %}>Next >></a>
+            <a class="page-link" {% if y.has_next == true %}  href="{{ url_for('content.table', page_num=y.next_num, X=x,selected_row=selected_row) }}" {%else%} href="#" {% endif %}>Next >></a>
         </li>
    
      </ul> 
 
-    
+  </div>
+  </table>
+<div class="col-sm-1"></div>
 {% endblock %}

@@ -6,22 +6,11 @@
     <h6> Filtered by: {{filters}} </h6>   
     {%endif%}
     <br>
-
     {{ div|safe }}
     {{ script|safe }}
     <br>
     <form action="{{ url_for('content.show') }}">
-        <button class="bg-sunglow btn-lg btn-block" >Back to Filters </button> 
-    </form> <br>
- 
+      <button class="bg-sunglow btn-lg btn-block" >Back to Filters </button> 
+    </form> <br> 
 </div>
-
-
-
-
-
-
-
-
-
 {% endblock %}
