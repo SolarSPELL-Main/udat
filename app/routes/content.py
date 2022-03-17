@@ -1,6 +1,6 @@
 from flask import json
 from flask.json import jsonify
-from sqlalchemy import func
+from sqlalchemy import desc, func
 from bokeh.models.annotations import Title
 from flask.helpers import flash, url_for
 from sqlalchemy.orm import query
@@ -115,16 +115,38 @@ def plot():
                     if selected_col == "none":
                         flash('A primary filter must be selected to plot your data')
                         return redirect(url_for('content.show'))
+                    
                     x = db.session.query(getattr(Content,selected_col)). join(ContentSet,ContentSet.id == Content.set_id).\
                                          join(Location,Location.id == ContentSet.location ).\
                                          join(Country,Country.id == Location.country_id).\
                                          filter(*queries).all()
+                    x_df = pd.DataFrame(x, columns=[selected_col]) 
+
+                    if selected_col == "title":
+                        x = y = db.session.query(Content.title,func.count(selected_col).label('number')).join(ContentSet,ContentSet.id == Content.set_id).\
+                                         join(Location,Location.id == ContentSet.location ).\
+                                         join(Country,Country.id == Location.country_id).\
+                                         filter(*queries).group_by(Content.title).order_by(desc('number')).limit(10)
+                        x_df = pd.DataFrame(x, columns=[selected_col,'number']) 
+                        x_list = x_df[selected_col].values.tolist()
+                        vals_list = list(x_df['number'])
+                       
+                        p = figure(x_range = x_list, plot_height=500, plot_width=500,
+                                   toolbar_location="right", 
+                                   tools="pan,wheel_zoom,box_zoom,undo,redo,reset,save")
+                        p.xaxis.major_label_orientation = "vertical"
+                        p.xgrid.grid_line_color = None
+                        p.vbar(x = x_list, top=vals_list, width=0.9) 
+                        script,div = components(p)
+                        kwargs = {'script':script, 'div':div}
+                        return render_template('plot.html', **kwargs, selected_col = selected_col)
+                        
+
                     if x == []:
                           flash('No data available with the selected filters')
                           return redirect(url_for('content.show'))
                     else:
                         # select all categories from Content table
-                        x_df = pd.DataFrame(x, columns=[selected_col]) 
                         x_list = x_df[selected_col].values.tolist()
                         x_counter = Counter(x_list)
                         x_list = list(x_counter) # convert  counter dictionary to list in order to plot x_range and x 
@@ -142,11 +164,19 @@ def plot():
                         kwargs = {'script':script, 'div':div}
                         return render_template('plot.html', **kwargs, filters=title, selected_col = selected_col)
             elif request.form['submit_button'] == 'list':
-                if selected_col != "none":
+                if selected_col == "title":
                     y = db.session.query(Content,ContentSet,Location,Country,func.count(selected_col).label('number')).join(ContentSet,ContentSet.id == Content.set_id).\
                                          join(Location,Location.id == ContentSet.location ).\
                                          join(Country,Country.id == Location.country_id).\
-                                         filter(*queries).group_by(selected_col).all()
+                                         filter(*queries).group_by(Content.title).order_by(desc('number')).limit(10)
+                    return render_template('show_list.html',y=y,x=1,selected_col =selected_col)
+
+
+                if selected_col != "none" and selected_col !="title":
+                    y = db.session.query(Content,ContentSet,Location,Country,func.count(selected_col).label('number')).join(ContentSet,ContentSet.id == Content.set_id).\
+                                         join(Location,Location.id == ContentSet.location ).\
+                                         join(Country,Country.id == Location.country_id).\
+                                         filter(*queries).group_by(selected_col).order_by(desc('number')).all()
                     if y == []:
                           flash('No data available with the selected filters')
                           return redirect(url_for('content.show'))

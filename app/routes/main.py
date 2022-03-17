@@ -4,7 +4,7 @@ import pandas as pd
 import app
 from flask.helpers import flash
 from werkzeug.utils import redirect
-from app.models import Country, Location, User
+from app.models import ContentSet, Country, Location, User
 from flask import Blueprint, render_template, url_for,request
 from flask_login import current_user
 from app import db
@@ -24,7 +24,7 @@ def show():
     if current_user.is_authenticated:
        # output_file("colormapped_bars.html")
 
-        countries = db.session.query(Country.name).join(Location,Location.country_id==Country.id).all()
+        countries = db.session.query(Country.name).join(Location,Location.country_id==Country.id).join(ContentSet,ContentSet.location == Location.id).all()
         x_df = pd.DataFrame(countries)
         x_list = x_df[0].values.tolist()
         x_counter = Counter(x_list)
@@ -36,7 +36,7 @@ def show():
                                    tools="")
         p.vbar(x = x_list, top=vals_list, width=0.9, color=Spectral6)
         p.xgrid.grid_line_color = None
-        p.yaxis.axis_label = 'Number of Locations'
+        p.yaxis.axis_label = 'Number of Contents'
         p.y_range.start = 0
         script,div = components(p)       
         kwargs = {'script':script, 'div':div}

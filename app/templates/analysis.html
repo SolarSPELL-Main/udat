@@ -29,6 +29,7 @@
       <label for="col" class="text-primary-dark"> Select from primary filter to group data</label>
       <select name="col" id="col" class="form-select form-select-lg">
          <option value="none" name="none">--primary selection--</option>
+         <option value="title" {% if col == "title"%} selected {% endif %}>Title</option>
          <option value="language" {% if col == "language"%} selected {% endif %}>Language</option>
          <option value="content_type" {% if col == "content_type"%} selected {% endif %}>Content Type</option>
          <option value="subject" {% if col == "subject"%} selected {% endif %}>Subject</option>
@@ -55,6 +56,7 @@
       </a>                  
       <div class="collapse" id="collapseExample">
          <div class="card card-body col-md-4">
+           
                <select name="lang" id="lang" class="form-select form-select-sm">
                   <option value="Language">Language</option>
                   {% for value in language %}

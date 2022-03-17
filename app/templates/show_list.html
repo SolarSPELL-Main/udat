@@ -17,6 +17,11 @@
     <tr>
       <td>{{data[4]}}</td>            
       <td id="language"  class="bg-sunglow">
+        {% if selected_col == 'title'%}            
+        <form action="{{ url_for('content.selected_row',selected_row=data.Content.title) }}"> 
+          <button class="btn" name="titles">{{data.Content.title}}</button>
+        </form>                              
+        {%endif%}
         {% if selected_col == 'language'%}            
         <form action="{{ url_for('content.selected_row',selected_row=data.Content.language) }}"> 
           <button class="btn" name="titles">{{data.Content.language}}</button>
@@ -55,6 +60,11 @@
                         
       </td>
       <td>
+        {% if selected_col == 'title'%}            
+        <form action="{{ url_for('content.selected_row',selected_row=data.Content.title) }}"> 
+          <button class="btn btn-primary" name="titles">More Details</button>
+        </form>                              
+        {%endif%}
         {% if selected_col == 'language'%}            
         <form action="{{ url_for('content.selected_row',selected_row=data.Content.language) }}"> 
           <button class="btn btn-primary" name="titles">More Details</button>
