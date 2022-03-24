@@ -141,6 +141,25 @@ def plot():
                         kwargs = {'script':script, 'div':div}
                         return render_template('plot.html', **kwargs, selected_col = selected_col)
                         
+                    if selected_col == "parent_folder":
+                        x = y = db.session.query(Content.parent_folder,func.count(selected_col).label('number')).join(ContentSet,ContentSet.id == Content.set_id).\
+                                         join(Location,Location.id == ContentSet.location ).\
+                                         join(Country,Country.id == Location.country_id).\
+                                         filter(*queries).group_by(Content.parent_folder).order_by(desc('number')).limit(10)
+                        x_df = pd.DataFrame(x, columns=[selected_col,'number']) 
+                        x_list = x_df[selected_col].values.tolist()
+                        vals_list = list(x_df['number'])
+                       
+                        p = figure(x_range = x_list, plot_height=500, plot_width=500,
+                                   toolbar_location="right", 
+                                   tools="pan,wheel_zoom,box_zoom,undo,redo,reset,save")
+                        p.xaxis.major_label_orientation = "vertical"
+                        p.xgrid.grid_line_color = None
+                        p.vbar(x = x_list, top=vals_list, width=0.9) 
+                        script,div = components(p)
+                        kwargs = {'script':script, 'div':div}
+                        return render_template('plot.html', **kwargs, selected_col = selected_col)
+                        
 
                     if x == []:
                           flash('No data available with the selected filters')
